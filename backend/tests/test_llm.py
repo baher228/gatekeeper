@@ -381,7 +381,7 @@ def test_cursor_timeout_kills_process_group_without_waiting_for_output_eof(monke
 
     monkeypatch.setattr(llm.asyncio, "wait_for", timeout)
 
-    with pytest.raises(TimeoutError, match="timed out after 60 seconds"):
+    with pytest.raises(TimeoutError, match="timed out after 25 seconds"):
         asyncio.run(llm.complete_json([]))
 
     assert len(calls) == 2

@@ -194,13 +194,13 @@ async def _complete_with_cursor(messages: list[dict], settings: dict) -> str:
             start_new_session=True,
         )
         try:
-            await asyncio.wait_for(process.wait(), timeout=60)
+            await asyncio.wait_for(process.wait(), timeout=25)
         except asyncio.TimeoutError as error:
             try:
                 os.killpg(process.pid, signal.SIGKILL)
             except (ProcessLookupError, PermissionError):
                 pass
-            raise TimeoutError("Cursor agent timed out after 60 seconds") from error
+            raise TimeoutError("Cursor agent timed out after 25 seconds") from error
 
         if process.returncode != 0:
             raise RuntimeError(f"Cursor agent exited with status {process.returncode}")

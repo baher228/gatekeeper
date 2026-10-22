@@ -59,10 +59,11 @@ docker run -d --name gk-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=gatekeep
 cd backend
 python3.11 -m venv .venv && .venv/bin/pip install -r requirements.txt
 cp .env.example .env            # optional: add CURSOR_API_KEY, GEMINI_API_KEY, or select Grok with LLM_PROVIDER=grok and XAI_API_KEY
+curl -fsS https://cursor.com/install | bash   # only for LLM_PROVIDER=cursor: installs ~/.local/bin/cursor-agent
 source .venv/bin/activate && ./run.sh
 # To use backend/.env.supabase instead: ENV_FILE=.env.supabase ./run.sh
 
-# 3. Frontend → http://localhost:5173 (proxies /api to :8000)
+# 3. Frontend → http://localhost:5173 (proxies /api to :8000), in a second terminal from the repo root
 cd frontend && npm install && npm run dev
 ```
 
