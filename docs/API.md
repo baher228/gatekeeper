@@ -74,8 +74,9 @@ ApplicantDetail = ApplicantSummary + {
 ```
 EvalReport = {generated_at, test_set: {n, n_accept, n_decline, n_scam, n_edge, source}, train_set: {n, source},
   variants: [{name: "rules_only"|"rules_plus_history", accuracy, accept_precision, accept_recall, decline_precision, decline_recall,
-              false_block_rate, ask_rate, accuracy_on_decided, confusion: {...}, n}],
-  notes: [string], edge_cases: [{name, label, rules_only, rules_plus_history}]}
+              false_block_rate, ask_rate, accuracy_on_decided, confusion: {...}, confusion_matrix: {accept|decline: {accept, ask, decline}},
+              by_kind: {kind: {n, accuracy, ask_rate}}, n}],
+  notes: [string], edge_cases: [{kind, labels, rules_only_accuracy, rules_plus_history_accuracy}]}
 ```
 
 ## Misc
