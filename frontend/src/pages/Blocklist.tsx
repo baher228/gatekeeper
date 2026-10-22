@@ -48,6 +48,55 @@ function EntryCard({ e, slug, onChange }: { e: BlockEntry; slug: string; onChang
   )
 }
 
+function EventBlacklist({ slug }: { slug: string }) {
+  const bans = useAsync(() => api.bans(slug), [slug])
+  const [f, setF] = useState({ identifier_type: 'email', identifier: '', reason: '' })
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+  const run = async (fn: () => Promise<unknown>) => {
+    setBusy(true); setErr(null)
+    try { await fn(); bans.reload() } catch (x) { setErr((x as Error).message) } finally { setBusy(false) }
+  }
+  const add = (e: FormEvent) => { e.preventDefault(); run(async () => { await api.addBan(slug, f); setF({ ...f, identifier: '', reason: '' }) }) }
+  const items = bans.data ?? []
+  return (
+    <section className="mt-10">
+      <Label>Event blacklist · private to this community</Label>
+      <p className="mt-2 max-w-3xl text-sm text-muted">People you never want at your events. A match declines them here only; other communities never see these rows (row-level security on community).</p>
+      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="min-w-0 space-y-2">
+          {bans.loading && <Loading />}
+          {bans.error && <ErrorState message={bans.error} onRetry={bans.reload} />}
+          {!bans.loading && !bans.error && items.length === 0 && <Empty title="Nobody on your event blacklist." />}
+          {items.map(b => (
+            <Card key={b.id} className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="font-mono text-xs text-muted">{b.identifier_type} · {b.label ?? 'hashed'} · {fmtDate(b.created_at)}</div>
+                <div className="mt-1 text-sm">{b.reason}</div>
+              </div>
+              <Button disabled={busy} onClick={() => run(() => api.removeBan(slug, b.id))}>Remove</Button>
+            </Card>
+          ))}
+        </div>
+        <form onSubmit={add}>
+          <Card className="space-y-3">
+            <Label>Ban from our events</Label>
+            <Field label="Type">
+              <select className={inputCls} value={f.identifier_type} onChange={e => setF({ ...f, identifier_type: e.target.value })}>
+                <option value="email">Email</option><option value="phone">Phone</option><option value="github">GitHub</option><option value="handle">Chat handle</option>
+              </select>
+            </Field>
+            <Field label="Identifier"><input required className={inputCls} value={f.identifier} onChange={e => setF({ ...f, identifier: e.target.value })} /></Field>
+            <Field label="Reason"><input required className={inputCls} value={f.reason} onChange={e => setF({ ...f, reason: e.target.value })} placeholder="Harassed attendees at the March event" /></Field>
+            {err && <p className="text-sm text-decline">{err}</p>}
+            <Button variant="primary" type="submit" disabled={busy} className="w-full">Add to event blacklist</Button>
+          </Card>
+        </form>
+      </div>
+    </section>
+  )
+}
+
 export default function BlocklistPage() {
   const { slug = '' } = useParams()
   const list = useAsync(() => api.blocklist(slug), [slug])
@@ -90,6 +139,7 @@ export default function BlocklistPage() {
           </Card>
         </form>
       </div>
+      <EventBlacklist slug={slug} />
     </div>
   )
 }

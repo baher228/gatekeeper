@@ -4,6 +4,7 @@ import { api, REASON_LABELS } from '../api'
 import type { ApplicantDetail, ModelInfo, ReasonCategory } from '../api'
 import { useAsync } from '../hooks'
 import { Button, Card, Empty, ErrorState, Kbd, Label, Loading, PageHeader, Tag, cx, inputCls, timeAgo } from '../components/ui'
+import { ExtrasChips } from '../components/Extras'
 import { EvidencePanel, HistoryPanel, RuleChecks, VerdictSummary } from '../components/Evidence'
 
 const REASON_KEYS: ReasonCategory[] = ['skill_gap', 'minor_issue', 'capacity', 'rules_mismatch', 'scam_abuse']
@@ -89,6 +90,7 @@ export default function QueuePage() {
                     <Tag>{cur.category}</Tag>
                     {cur.is_seed && <Tag>seed</Tag>}
                     {cur.reconsidered && <Tag tone="accept">reconsidered</Tag>}
+                    <ExtrasChips a={cur} />
                   </div>
                   <div className="mt-1 truncate font-mono text-xs text-muted">{[cur.email, cur.github && `gh:${cur.github}`, cur.devpost && `dp:${cur.devpost}`, cur.chat_handle].filter(Boolean).join(' · ')} · {timeAgo(cur.created_at)}</div>
                 </div>

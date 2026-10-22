@@ -4,6 +4,7 @@ import { api, REASON_LABELS, RECONSIDERABLE } from '../api'
 import type { ReasonCategory } from '../api'
 import { useAsync } from '../hooks'
 import { Button, Card, ErrorState, Label, Loading, StatusBadge, Tag, fmtDate, timeAgo } from '../components/ui'
+import { ExtrasChips, ExtrasPanel } from '../components/Extras'
 import { EvidencePanel, HistoryPanel, RuleChecks, VerdictSummary } from '../components/Evidence'
 
 export default function ApplicantPage() {
@@ -36,6 +37,7 @@ export default function ApplicantPage() {
             <Tag>{x.category}</Tag>
             {x.is_seed && <Tag>seed data</Tag>}
             <Tag>{x.decision_source === 'lead' ? 'decided by lead' : 'auto-routed'}</Tag>
+            <ExtrasChips a={x} />
           </div>
           <div className="mt-1.5 break-all font-mono text-xs text-muted">{[x.email, x.phone_masked, x.github && `github:${x.github}`, x.devpost && `devpost:${x.devpost}`, x.chat_handle].filter(Boolean).join(' · ')}</div>
         </div>
@@ -65,6 +67,7 @@ export default function ApplicantPage() {
             </div>
             {msg && <p className={`mt-3 text-sm ${msg.ok ? 'text-muted' : 'text-decline'}`}>{msg.text}</p>}
           </Card>
+          {x.extras && <Card className="space-y-4"><ExtrasPanel a={x} onChange={a.reload} /></Card>}
           <Card>
             <Label>Quota · {r.quota.category}</Label>
             <div className="mt-2 text-sm">{r.quota.bypass_quota ? 'This category bypasses the quota.' : `${r.quota.used}/${r.quota.quota} seats used, ${r.quota.remaining} left at decision time.`}</div>

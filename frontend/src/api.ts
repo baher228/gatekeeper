@@ -27,7 +27,16 @@ export interface Recommendation {
   }
   quota: { category: string; quota: number; used: number; remaining: number; bypass_quota: boolean; outcome: 'seat' | 'waitlisted' | null; waitlist_rank: number | null }
 }
+export type NoteFlag = 'great_volunteer' | 'no_show' | 'disruptive' | 'watch' | 'vip'
+export interface AttendeeNote { id: string; flag: NoteFlag | null; note: string; visibility: 'private' | 'shared'; author: string; community_name: string; created_at: string }
+export interface Extras {
+  attendance: { attended: number; no_show: number; events: { event_name: string; event_date: string; status: 'attended' | 'no_show' }[] }
+  ban: { id: string; reason: string; created_at: string; label: string | null } | null
+  own_notes: AttendeeNote[]; shared_notes: AttendeeNote[]; shared_flags: { flag: NoteFlag; community_name: string }[]
+}
+export interface CommunityBan { id: string; identifier_type: string; label: string | null; reason: string; created_by: string; created_at: string }
 export interface ApplicantDetail extends ApplicantSummary {
+  extras?: Extras
   community_slug: string; email: string; phone_masked: string | null; github: string | null; devpost: string | null; chat_handle: string | null
   what_build: string; decided_at: string | null; decline_reason: ReasonCategory | null
   recommendation: Recommendation
@@ -112,6 +121,12 @@ export const api = {
   removeEntry: (slug: string, id: string) => req<BlockEntry>('POST', `/communities/${slug}/blocklist/${id}/remove`),
   appeal: (body: { identifier_type: string; identifier: string; contact: string; message: string }) => req<{ id: string | null; status: string; matched: boolean }>('POST', '/appeals', body),
   resolveAppeal: (slug: string, id: string, outcome: 'upheld' | 'rejected') => req<BlockEntry>('POST', `/communities/${slug}/appeals/${id}/resolve`, { outcome }),
+  bans: (slug: string) => req<CommunityBan[]>('GET', `/communities/${slug}/bans`),
+  addBan: (slug: string, body: { identifier_type: string; identifier: string; reason: string }) => req<unknown>('POST', `/communities/${slug}/bans`, body),
+  removeBan: (slug: string, id: string) => req<unknown>('DELETE', `/communities/${slug}/bans/${id}`),
+  banApplicant: (id: string, reason: string) => req<{ ok: boolean; count: number }>('POST', `/applicants/${id}/ban`, { reason }),
+  addNote: (id: string, body: { flag: NoteFlag | null; note: string; visibility: 'private' | 'shared' }) => req<AttendeeNote>('POST', `/applicants/${id}/notes`, body),
+  deleteNote: (id: string, noteId: string) => req<unknown>('DELETE', `/applicants/${id}/notes/${noteId}`),
   evalReport: () => req<EvalReport>('GET', '/eval'),
   runEval: () => req<EvalReport>('POST', '/eval/run', undefined, 180000),
   checkMessage: (text: string) => req<{ scam_probability: number; label: string; top_terms: { term: string; weight: number }[]; draft_removal: string }>('POST', '/messages/check', { text }),
