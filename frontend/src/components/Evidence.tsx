@@ -22,7 +22,7 @@ export function VerdictSummary({ a, compact = false }: { a: ApplicantDetail; com
         <StatusBadge status={r.verdict} />
         {a.status !== (r.verdict === 'accept' ? 'accepted' : r.verdict === 'decline' ? 'declined' : 'ask') && <><span className="text-faint">→</span><StatusBadge status={a.status} /></>}
         {r.disagreement && <Tag tone="ask">model disagrees</Tag>}
-        {r.llm.status === 'live' ? <Tag tone="accept">Grok · {r.llm.model}</Tag> : <Tag tone="ask" className="max-w-full truncate">LLM unavailable – rule-only reasoning</Tag>}
+        {r.llm.status === 'live' ? <Tag tone="accept">{r.llm.provider} · {r.llm.model}</Tag> : <Tag title={r.llm.error ?? undefined} tone="ask" className="max-w-full truncate">LLM unavailable – rule-only reasoning</Tag>}
       </div>
       <div className="mt-2 text-sm text-muted">{ROUTE_LABELS[r.route_rule] ?? r.route_rule}{a.decline_reason && ` · ${REASON_LABELS[a.decline_reason]}`}</div>
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -53,7 +53,7 @@ export function RuleChecks({ r }: { r: Recommendation }) {
             </div>
             <div className="mt-0.5 text-sm text-muted">{c.reason}</div>
             {c.quote && <div className="mt-1.5 border-l border-line pl-2.5 text-xs italic text-muted">“{c.quote}”</div>}
-            <div className="mt-1 font-mono text-[10px] uppercase tracking-wider text-faint">{c.source === 'llm' ? 'Grok' : 'heuristic'}</div>
+            <div className="mt-1 font-mono text-[10px] uppercase tracking-wider text-faint">{c.source === 'llm' ? 'LLM' : 'heuristic'}</div>
           </div>
         </div>
       ))}

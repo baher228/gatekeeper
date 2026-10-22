@@ -6,6 +6,7 @@ from app.schemas import AppealIn, BlocklistIn, MessageCheckIn, ResolveAppealIn
 from app.services.blocklist import identifier_hash
 from app.services.applications import community_by_slug
 from app.services.history import train_model
+from app.services import llm
 from app.services.message_classifier import check_message
 
 router = APIRouter(prefix="/api")
@@ -200,8 +201,17 @@ def health():
         db_ok = True
     except Exception:
         db_ok = False
+    settings = llm.config()
+    llm_error = llm.last_error
+    if llm_error is None and not settings["configured"]:
+        llm_error = llm.configuration_error(settings)
     return {
         "ok": db_ok, "db": "connected" if db_ok else "unavailable",
-        "llm": {"available": bool(os.getenv("XAI_API_KEY")), "model": os.getenv("GROK_MODEL")},
+        "llm": {
+            "available": bool(settings["configured"] and llm.last_error is None),
+            "provider": settings["provider"],
+            "model": settings["model"],
+            "error": llm_error,
+        },
         "github_token": bool(os.getenv("GITHUB_TOKEN")),
     }

@@ -16,8 +16,8 @@ function Logo() {
 export function LlmBadge({ health }: { health: Health | null }) {
   if (!health) return null
   return health.llm.available
-    ? <span title={`Rule checks written by ${health.llm.model}`} className="hidden items-center gap-1.5 rounded-md border border-line px-2 py-1 font-mono text-[11px] text-muted md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-accept/80" />Grok live · {health.llm.model}</span>
-    : <span title="XAI_API_KEY missing or Grok failed – rule checks use deterministic heuristics" className="hidden items-center gap-1.5 rounded-md border border-ask/25 bg-ask/5 px-2 py-1 font-mono text-[11px] text-ask md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-ask/80" />LLM unavailable – rule-only reasoning</span>
+    ? <span title={`Rule checks written by ${health.llm.provider} · ${health.llm.model}`} className="hidden items-center gap-1.5 rounded-md border border-line px-2 py-1 font-mono text-[11px] text-muted md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-accept/80" />{health.llm.provider} live · {health.llm.model}</span>
+    : <span title={health.llm.error ?? undefined} className="hidden items-center gap-1.5 rounded-md border border-ask/25 bg-ask/5 px-2 py-1 font-mono text-[11px] text-ask md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-ask/80" />LLM unavailable – rule-only reasoning</span>
 }
 
 function Notifications({ slug }: { slug: string }) {

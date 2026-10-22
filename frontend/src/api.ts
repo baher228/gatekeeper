@@ -16,7 +16,7 @@ export interface RuleCheck { rule_id: string; rule: string; score: number; verdi
 export interface BlockMatch { entry_id: string; identifier_type: string; status: string; reporting_community: string; evidence: string; links: string[]; reported_at: string }
 export interface Recommendation {
   verdict: Verdict; confidence: number; final_score: number; reasons: string[]; route_rule: string; disagreement: boolean
-  llm: { status: 'live' | 'unavailable'; model: string | null; error: string | null }
+  llm: { status: 'live' | 'unavailable'; provider: string | null; model: string | null; error: string | null }
   rule_score: number; rule_checks: RuleCheck[]
   history: { available: boolean; p_accept: number | null; n_training: number; top_features: { feature: string; value: number; contribution: number }[] }
   evidence: {
@@ -51,7 +51,7 @@ export interface EvalReport {
   generated_at: string; test_set: { n: number; n_accept: number; n_decline: number; n_scam: number; n_edge: number; source: string }
   train_set: { n: number; source: string }; variants: EvalVariant[]; notes: string[]
 }
-export interface Health { ok: boolean; db: string | boolean; llm: { available: boolean; model: string | null }; github_token: boolean }
+export interface Health { ok: boolean; db: string | boolean; llm: { available: boolean; provider: string | null; model: string | null; error: string | null }; github_token: boolean }
 export interface ApplyIn { name: string; email: string; phone?: string; github?: string; devpost?: string; chat_handle?: string; what_build: string; category: string }
 
 export class ApiError extends Error { status: number; constructor(status: number, msg: string) { super(msg); this.status = status } }

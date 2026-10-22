@@ -57,8 +57,8 @@ export function StatusBadge({ status, className }: { status: Status | Verdict | 
   const tone = statusTone[status] ?? 'muted'
   return <span className={cx('inline-flex h-6 items-center rounded-md border px-2 font-mono text-[11px] uppercase tracking-wider', toneCls[tone], className)}>{status.replace('_', ' ')}</span>
 }
-export function Tag({ children, tone = 'muted', className }: { children: ReactNode; tone?: 'muted' | 'accept' | 'ask' | 'decline'; className?: string }) {
-  return <span className={cx('inline-flex h-6 items-center gap-1 rounded-md border px-2 font-mono text-[11px] tracking-wide', toneCls[tone], className)}>{children}</span>
+export function Tag({ children, tone = 'muted', className, title }: { children: ReactNode; tone?: 'muted' | 'accept' | 'ask' | 'decline'; className?: string; title?: string }) {
+  return <span title={title} className={cx('inline-flex h-6 items-center gap-1 rounded-md border px-2 font-mono text-[11px] tracking-wide', toneCls[tone], className)}>{children}</span>
 }
 
 export function ScoreBar({ value, className }: { value: number | null | undefined; className?: string }) {

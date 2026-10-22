@@ -97,7 +97,7 @@ def route(
         "reasons": reasons[:12],
         "route_rule": route_rule,
         "disagreement": bool(disagreement),
-        "llm": {"status": "unavailable", "model": None, "error": None},
+        "llm": {"status": "unavailable", "provider": None, "model": None, "error": None},
         "rule_score": round(float(rule_score), 4),
         "rule_checks": checks,
         "history": {

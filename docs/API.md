@@ -34,7 +34,7 @@ ApplicantDetail = ApplicantSummary + {
     reasons: [string],                      # human readable, most important first
     route_rule: string,                     # which router rule fired, e.g. "blocklist_confirmed", "disagreement", "score_accept"
     disagreement: bool,
-    llm: {status: "live"|"unavailable", model: string|null, error: string|null},
+    llm: {status: "live"|"unavailable", provider: string|null, model: string|null, error: string|null},
     rule_score: float,
     rule_checks: [{rule_id, rule, score: float, verdict: "pass"|"unclear"|"fail", reason, quote: string|null, source: "llm"|"heuristic"}],
     history: {available: bool, p_accept: float|null, n_training: int, top_features: [{feature, value, contribution}]},
@@ -80,5 +80,5 @@ EvalReport = {generated_at, test_set: {n, n_accept, n_decline, n_scam, n_edge, s
 ```
 
 ## Misc
-- `GET /health` → `{ok, db, llm: {available, model}, github_token: bool}`
+- `GET /health` → `{ok, db, llm: {available, provider, model, error}, github_token: bool}`
 - Stretch: `POST /messages/check` body `{text}` → `{scam_probability, label, top_terms: [{term, weight}], draft_removal}`

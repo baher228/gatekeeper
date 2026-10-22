@@ -4,7 +4,7 @@
 
 The lead writes the community's rules in plain English and sets seat quotas per guest category. Gatekeeper then:
 
-1. Scores every applicant against those rules (Grok structured output, or deterministic heuristics when Grok is unavailable, shown with a badge) and against public evidence: GitHub, Devpost, StopForumSpam and a shared cross-community blocklist.
+1. Scores every applicant against those rules (Gemini by default, optional Grok structured output, or deterministic heuristics when the selected provider is unavailable) and against public evidence: GitHub, Devpost, StopForumSpam and a shared cross-community blocklist.
 2. Adjusts the call with a small **history model** (logistic regression) trained on that lead's own past accept/decline decisions.
 3. Routes each applicant to **accept**, **ask** (the lead's review queue, plus a notification) or **decline**, always with a list of reasons and a confidence.
 4. Enforces **per-category quotas**. When a category is full, accepted applicants go to a ranked waitlist; VIPs can bypass the quota.
@@ -18,7 +18,7 @@ The lead writes the community's rules in plain English and sets seat quotas per 
 ```
 frontend/ (React + Vite + TS + Tailwind, Geist)         backend/ (FastAPI + Pydantic v2 + psycopg)            Postgres (Supabase-compatible SQL)
   Apply form ──POST /api/communities/{slug}/apply──▶  services/evidence.py  GitHub · Devpost · SFS (parallel, timeouts)
-  Review queue / Applicants / Detail                 services/rules.py     Grok JSON → Pydantic RuleCheck | heuristic_checks
+  Review queue / Applicants / Detail                 services/rules.py     Gemini/Grok JSON → Pydantic RuleCheck | heuristic_checks
   Blocklist / Appeals / Settings / Eval              services/history.py   LogisticRegression on lead decisions
                                                      services/router.py    ordered routing + quota/waitlist     ──▶ applicants, decisions,
                                                      services/actions.py   lead decisions, re-check, retrain        categories, blocklist_entries (RLS),
@@ -32,7 +32,7 @@ The REST contract (every route and JSON shape) is in [`docs/API.md`](docs/API.md
 | Component | Why |
 |---|---|
 | Written rules, scored rule by rule | Leads already have unwritten criteria. Writing them down makes every verdict explainable ("Rule 3 failed: …"). |
-| Grok structured output (`services/rules.py`) | Reading free text against free-text rules is the one step that needs a language model. The output is validated with Pydantic, quotes must appear verbatim in the application, and an invalid reply falls back to heuristics and is labelled as such. |
+| Gemini by default; Grok optional (`services/rules.py`) | Reading free text against free-text rules is the one step that needs a language model. The provider is selected with `LLM_PROVIDER`; output is validated with Pydantic, quotes must appear verbatim in the application, and invalid replies fall back to heuristics and are labelled as such. |
 | Deterministic router (`services/router.py`) | Safety rules (blocklist, spam signals, incomplete forms) and thresholds stay in code, where they are testable, rather than in a prompt. |
 | History model (`services/history.py`) | Every community is different. The model learns what *this* lead actually accepts (e.g. first-timers with a small real project) and shows its top feature contributions. If it disagrees with the rules, the applicant goes to the lead instead of being guessed. |
 | Review queue with shortcuts | Borderline cases go to a human. A/S/D plus number keys for decline reasons clear a week of applications in minutes, and every click becomes training data. |
@@ -51,7 +51,7 @@ docker run -d --name gk-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=gatekeep
 # 2. Backend → http://localhost:8000 (migrates, seeds if empty, starts uvicorn)
 cd backend
 python3.11 -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env            # optional: add XAI_API_KEY, GITHUB_TOKEN
+cp .env.example .env            # optional: add GEMINI_API_KEY, or select Grok with LLM_PROVIDER=grok and XAI_API_KEY
 source .venv/bin/activate && ./run.sh
 # To use backend/.env.supabase instead: ENV_FILE=.env.supabase ./run.sh
 
@@ -78,7 +78,10 @@ cd frontend && npm run build && npm run lint
 | `SUPABASE_URL` | no | Supabase project URL (used by Supabase integrations) |
 | `SUPABASE_ANON_KEY` | no | Supabase anonymous key |
 | `SUPABASE_SERVICE_ROLE_KEY` | no | Supabase service-role key; keep private |
-| `XAI_API_KEY` | no | Enables Grok rule scoring. Without it the UI shows "LLM unavailable – rule-only reasoning" |
+| `LLM_PROVIDER` | no | Provider for rule scoring; defaults to `gemini`, or set to `grok` |
+| `GEMINI_API_KEY` | no | Gemini API key when `LLM_PROVIDER=gemini` |
+| `GEMINI_MODEL` | no | Gemini model id; defaults to `gemini-3.8-flash` |
+| `XAI_API_KEY` | no | xAI API key when `LLM_PROVIDER=grok` |
 | `GROK_MODEL` | no | Grok model id; otherwise picked from `/v1/models` |
 | `GITHUB_TOKEN` | no | Raises the GitHub REST rate limit |
 | `BLOCKLIST_PEPPER` | yes in production | HMAC pepper shared by communities that pool their blocklist |
@@ -90,7 +93,7 @@ cd frontend && npm run build && npm run lint
 |---|---|
 | GitHub REST, Devpost search, StopForumSpam | **Live** for real handles and emails (each evidence card shows `live`, or `unavailable` with the error) |
 | Handles starting with `demo-` | **Simulated** evidence fixtures (`backend/app/seed.py`, labelled `simulated` in the UI), so the demo is deterministic |
-| Grok rule scoring | Live when `XAI_API_KEY` is set, otherwise heuristic and labelled |
+| Gemini rule scoring (default), Grok optional | Live when the selected provider is configured, otherwise heuristic and labelled |
 | Communities, past applicants, lead decisions, blocklist reports | **Seeded** synthetic data (`is_seed=true`, `@example.com`), with no real people |
 | Evaluation set | Synthetic, held out from training (see below) |
 | Message check | TF-IDF + logistic regression trained on 1,000 cached rows of UCI SMS Spam |
@@ -138,12 +141,12 @@ Setup: run `python -m app.seed`, then open http://localhost:5173 (lead view for 
 - **Routing thresholds**: final score ≥ 0.62 accept, ≤ 0.38 decline, otherwise ask. The final score is the rule score alone until the community has ≥ 10 lead decisions covering both outcomes, then a 50/50 blend with P(accept). These were fixed before evaluation and not tuned on the test set.
 - **StopForumSpam never auto-declines.** A hit sends the applicant to the queue, because the database has false positives and a wrongly blocked real person is the worst outcome.
 - **Auth** is a community selector ("lead login") with no passwords, per the brief's cuts. Leads act as their community, and RLS is enforced through `SET ROLE gatekeeper_community` plus `app.community_id`.
-- **No sentence-transformers/torch**: too heavy for the time box. Rule heuristics use token overlap; Grok does the semantic work when available.
+- **No sentence-transformers/torch**: too heavy for the time box. Rule heuristics use token overlap; the selected LLM provider does the semantic work when available.
 - **Plain SQL with psycopg** instead of an ORM, so the same migrations run unchanged on Supabase.
 
 ## Known limitations
 
-- Without `XAI_API_KEY`, rule checks are keyword heuristics and miss nuance; the badge says so.
+- Without `GEMINI_API_KEY` (or `XAI_API_KEY` when `LLM_PROVIDER=grok`), rule checks are keyword heuristics and miss nuance; the badge says so.
 - The history model is trained on synthetic seed decisions until a real lead has made decisions.
 - Devpost has no public API, so the search page is scraped and may break or rate-limit (shown as `unavailable`).
 - No real authentication, no email sending, no WhatsApp integration (cut per the brief).
@@ -151,4 +154,6 @@ Setup: run `python -m app.seed`, then open http://localhost:5173 (lead view for 
 
 ## Open-source components
 
-FastAPI (MIT), Pydantic (MIT), psycopg (LGPL-3.0), scikit-learn (BSD-3), NumPy (BSD-3), APScheduler (MIT), phonenumbers (Apache-2.0), httpx (BSD-3), openai-python (Apache-2.0), React (MIT), Vite (MIT), Tailwind CSS (MIT), React Router (MIT), Geist fonts (SIL OFL 1.1), UCI SMS Spam Collection (CC BY 4.0, via the Hugging Face `ucirvine/sms_spam` rows API).
+FastAPI (MIT), Pydantic (MIT), psycopg (LGPL-3.0), scikit-learn (BSD-3), NumPy (BSD-3), APScheduler (MIT), phonenumbers (Apache-2.0), httpx (BSD-3), openai-python (Apache-2.0; OpenAI-compatible client for Gemini and Grok APIs), React (MIT), Vite (MIT), Tailwind CSS (MIT), React Router (MIT), Geist fonts (SIL OFL 1.1), UCI SMS Spam Collection (CC BY 4.0, via the Hugging Face `ucirvine/sms_spam` rows API).
+
+Gemini and xAI Grok are hosted model APIs, not additional open-source dependencies.

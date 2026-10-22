@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import json
-import os
 import re
-from functools import lru_cache
+from typing import Literal
 
 from pydantic import BaseModel, Field
-from typing import Literal
+
+from . import llm
 
 
 class RuleCheck(BaseModel):
@@ -73,63 +73,41 @@ def heuristic_checks(rules: list[dict], applicant: dict, evidence: dict) -> list
     return results
 
 
-@lru_cache(maxsize=4)
-def _model_id(api_key: str | None, configured: str | None) -> str | None:
-    if configured:
-        return configured
-    if not api_key:
-        return None
-    try:
-        import httpx
-
-        response = httpx.get(
-            "https://api.x.ai/v1/models",
-            headers={"Authorization": f"Bearer {api_key}"},
-            timeout=5,
-        )
-        response.raise_for_status()
-        ids = [m.get("id", "") for m in response.json().get("data", [])]
-        candidates = [name for name in ids if "grok-4" in name.lower()]
-        return next((name for name in candidates if "fast" in name.lower()), candidates[0] if candidates else None)
-    except Exception:
-        return None
-
-
 async def check_rules(rules: list[dict], applicant: dict, evidence: dict) -> tuple[list[dict], dict]:
-    key = os.getenv("XAI_API_KEY")
-    model = _model_id(key, os.getenv("GROK_MODEL"))
-    if not key or not model:
-        checks = heuristic_checks(rules, applicant, evidence)
-        error = "XAI_API_KEY not configured" if not key else "Grok model discovery failed"
-        return checks, {"status": "unavailable", "model": None, "error": error}
+    settings = llm.config()
+    provider = settings["provider"]
+    model = settings["model"]
+    if not settings["configured"]:
+        return heuristic_checks(rules, applicant, evidence), {
+            "status": "unavailable",
+            "provider": provider,
+            "model": model,
+            "error": llm.configuration_error(settings),
+        }
+    messages = [
+        {
+            "role": "system",
+            "content": "Return JSON with a checks array. Each check: rule_id, score 0-1, verdict pass/unclear/fail, reason <=20 words, quote verbatim or null.",
+        },
+        {
+            "role": "user",
+            "content": json.dumps(
+                {"rules": rules, "application": applicant, "evidence": evidence},
+                ensure_ascii=False,
+            ),
+        },
+    ]
     try:
-        from openai import AsyncOpenAI
-
-        client = AsyncOpenAI(api_key=key, base_url="https://api.x.ai/v1", timeout=5)
-        response = await client.chat.completions.create(
-            model=model,
-            response_format={"type": "json_object"},
-            messages=[
-                {
-                    "role": "system",
-                    "content": "Return JSON with a checks array. Each check: rule_id, score 0-1, verdict pass/unclear/fail, reason <=20 words, quote verbatim or null.",
-                },
-                {
-                    "role": "user",
-                    "content": json.dumps(
-                        {"rules": rules, "application": applicant, "evidence": evidence},
-                        ensure_ascii=False,
-                    ),
-                },
-            ],
-        )
+        content = await llm.complete_json(messages)
     except Exception as error:
         return heuristic_checks(rules, applicant, evidence), {
-            "status": "unavailable", "model": model,
-            "error": f"Grok request failed: {type(error).__name__}",
+            "status": "unavailable",
+            "provider": provider,
+            "model": model,
+            "error": llm.last_error or str(error)[:160],
         }
     try:
-        parsed = json.loads(response.choices[0].message.content or "")
+        parsed = json.loads(content)
         raw = parsed if isinstance(parsed, list) else parsed["checks"]
         checked = [RuleCheck.model_validate(item).model_dump() for item in raw]
         if any(len(item["reason"].split()) > 20 for item in checked):
@@ -140,10 +118,20 @@ async def check_rules(rules: list[dict], applicant: dict, evidence: dict) -> tup
         by_id = {item["id"]: item["text"] for item in rules}
         for item in checked:
             item.update(rule=by_id.get(item["rule_id"], ""), source="llm")
-        return checked, {"status": "live", "model": model, "error": None}
+        return checked, {
+            "status": "live",
+            "provider": provider,
+            "model": model,
+            "error": None,
+        }
     except Exception:
         checks = heuristic_checks(rules, applicant, evidence)
-        return checks, {"status": "unavailable", "model": model, "error": "invalid structured output"}
+        return checks, {
+            "status": "unavailable",
+            "provider": provider,
+            "model": model,
+            "error": "invalid structured output",
+        }
 
 
 def calculate_rule_score(checks: list[dict], evidence: dict, category: str) -> float:

@@ -142,8 +142,9 @@ def _score_applicant(applicant, evidence, categories, quota, community_id, use_h
     result = route(applicant, checks, rule_score, evidence, history, quota, [])
     result["recommendation"]["llm"] = {
         "status": "unavailable",
+        "provider": None,
         "model": None,
-        "error": "XAI_API_KEY not configured",
+        "error": "seed data – scored with heuristic rules",
     }
     return result, features
 
