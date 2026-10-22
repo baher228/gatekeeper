@@ -77,3 +77,37 @@ def test_applicant_routes_and_decline_validation(client):
     assert response.json()
     missing = client.get("/api/applicants/00000000-0000-0000-0000-000000000000")
     assert missing.status_code == 404
+
+
+def test_message_check_uses_cached_sms_model(client, monkeypatch):
+    from app.services import message_classifier
+
+    rows = [
+        {"text": "claim your free prize now", "label": "spam"},
+        {"text": "urgent winner call now", "label": "spam"},
+        {"text": "free cash reward guaranteed", "label": "spam"},
+        {"text": "limited offer claim today", "label": "spam"},
+        {"text": "win a bonus prize", "label": "spam"},
+        {"text": "are we still meeting for lunch", "label": "ham"},
+        {"text": "please call me when you arrive", "label": "ham"},
+        {"text": "thanks for your help yesterday", "label": "ham"},
+        {"text": "the project meeting starts at noon", "label": "ham"},
+        {"text": "see you at the station later", "label": "ham"},
+    ]
+
+    async def load_rows():
+        return rows
+
+    monkeypatch.setattr(message_classifier, "_MODEL", None)
+    monkeypatch.setattr(message_classifier, "_load_training_rows", load_rows)
+    response = client.post(
+        "/api/messages/check",
+        json={"text": "urgent, claim your free cash prize"},
+    )
+
+    assert response.status_code == 200, response.text
+    result = response.json()
+    assert result["label"] == "spam"
+    assert result["scam_probability"] > 0.5
+    assert result["top_terms"]
+    assert "review it" in result["draft_removal"]

@@ -2,10 +2,11 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
 from app.db import as_community, connect
-from app.schemas import AppealIn, BlocklistIn, ResolveAppealIn
+from app.schemas import AppealIn, BlocklistIn, MessageCheckIn, ResolveAppealIn
 from app.services.blocklist import identifier_hash
 from app.services.applications import community_by_slug
 from app.services.history import train_model
+from app.services.message_classifier import check_message
 
 router = APIRouter(prefix="/api")
 
@@ -180,6 +181,14 @@ def get_eval():
 def run_eval():
     from app.eval import run
     return run()
+
+
+@router.post("/messages/check")
+async def message_check(body: MessageCheckIn):
+    try:
+        return await check_message(body.text)
+    except RuntimeError as exc:
+        raise HTTPException(503, "SMS spam model unavailable") from exc
 
 
 @router.get("/health")

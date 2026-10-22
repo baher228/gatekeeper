@@ -97,6 +97,10 @@ class ResolveAppealIn(BaseModel):
     outcome: Literal["upheld", "rejected"]
 
 
+class MessageCheckIn(BaseModel):
+    text: str = Field(min_length=1, max_length=5000)
+
+
 class SettingsIn(BaseModel):
     rules: list[Rule]
     categories: list[CategoryQuota]

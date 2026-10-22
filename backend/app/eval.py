@@ -34,7 +34,7 @@ def _fetch_spam_rows() -> list[str]:
             data = json.loads(SMS_SAMPLE_PATH.read_text())
             rows = data.get("rows", [])
             if rows:
-                return [item["text"] for item in rows if item.get("label") in (1, "spam", "ham")]
+                return [item["text"] for item in rows if item.get("label") in (1, "spam")]
         except (OSError, ValueError, KeyError):
             pass
     import httpx
@@ -58,7 +58,11 @@ def _fetch_spam_rows() -> list[str]:
                 row = item.get("row", {})
                 text = row.get("text") or row.get("sms") or row.get("message")
                 label = row.get("label", row.get("category"))
-                if text and ("spam" in str(label).lower() or str(label) == "1"):
+                if text and (
+                    str(label).lower() == "spam"
+                    or (isinstance(label, int) and label == 1)
+                    or str(label) == "1"
+                ):
                     collected.append({"text": text, "label": "spam"})
         except Exception:
             continue
