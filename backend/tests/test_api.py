@@ -138,3 +138,40 @@ def test_message_check_uses_cached_sms_model(client, monkeypatch):
     assert result["scam_probability"] > 0.5
     assert result["top_terms"]
     assert "review it" in result["draft_removal"]
+
+
+def test_ask_application_persists_ask_more_and_review_notification(client):
+    response = client.post(
+        "/api/communities/grok-night-london/apply",
+        json={
+            "name": "Pending Review Applicant",
+            "email": "pending-demo-b@example.com",
+            "chat_handle": "demo-ada-ships",
+            "what_build": "I shipped a practical AI demo and would like feedback from London builders.",
+            "category": "builder",
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    applicant = response.json()
+    assert applicant["status"] == "ask"
+    with connect() as conn:
+        decision = conn.execute(
+            """select verdict,source from decisions
+            where applicant_id=%s order by created_at desc limit 1""",
+            (applicant["id"],),
+        ).fetchone()
+        notification = conn.execute(
+            """select id from notifications
+            where applicant_id=%s and kind='needs_review' limit 1""",
+            (applicant["id"],),
+        ).fetchone()
+
+    assert decision is not None
+    assert decision["verdict"] == "ask_more"
+    assert decision["source"] == "auto"
+    assert notification is not None
+    with connect() as conn:
+        conn.execute("delete from notifications where applicant_id=%s", (applicant["id"],))
+        conn.execute("delete from decisions where applicant_id=%s", (applicant["id"],))
+        conn.execute("delete from applicants where id=%s", (applicant["id"],))
