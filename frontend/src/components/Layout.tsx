@@ -72,6 +72,52 @@ function Notifications({ slug }: { slug: string }) {
   )
 }
 
+function CommunitySwitcher({ slug, communities, onPick }: { slug: string; communities: CommunityRef[]; onPick: (slug: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const ref = useRef<HTMLDivElement>(null)
+  const items = communities.length ? communities : [{ id: slug, slug, name: slug }]
+  const current = items.find(c => c.slug === slug) ?? items[0]
+  useEffect(() => {
+    if (!open) return
+    const click = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false) }
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('mousedown', click)
+    document.addEventListener('keydown', esc)
+    return () => { document.removeEventListener('mousedown', click); document.removeEventListener('keydown', esc) }
+  }, [open])
+  const toggle = () => { setActive(Math.max(0, items.findIndex(c => c.slug === slug))); setOpen(o => !o) }
+  const pick = (to: string) => { setOpen(false); if (to !== slug) onPick(to) }
+  const onKey = (e: React.KeyboardEvent) => {
+    if (!open) { if (e.key === 'ArrowDown') { e.preventDefault(); toggle() } return }
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(i => (i + 1) % items.length) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(i => (i - 1 + items.length) % items.length) }
+    else if (e.key === 'Enter') { e.preventDefault(); pick(items[active].slug) }
+  }
+  return (
+    <div className="relative min-w-0" ref={ref} onKeyDown={onKey}>
+      <button type="button" onClick={toggle} aria-haspopup="listbox" aria-expanded={open} aria-label="Community (lead login)"
+        className="flex h-9 min-w-0 max-w-[31vw] items-center gap-2 rounded-lg border border-line bg-card px-2.5 text-sm hover:bg-white/[.04] sm:max-w-none">
+        <span className="truncate">{current.name}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={cx('shrink-0 text-muted transition-transform duration-150', open && 'rotate-180')}><path d="m6 9 6 6 6-6" /></svg>
+      </button>
+      {open && (
+        <ul role="listbox" className="fade-in absolute left-0 z-30 mt-2 w-max min-w-full max-w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-line bg-card p-1 shadow-2xl shadow-black/60">
+          {items.map((c, i) => (
+            <li key={c.slug} role="option" aria-selected={c.slug === slug}>
+              <button type="button" onMouseEnter={() => setActive(i)} onClick={() => pick(c.slug)}
+                className={cx('flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm', i === active ? 'bg-white/[.06]' : 'hover:bg-white/[.04]')}>
+                <span className="grid w-4 shrink-0 place-items-center">{c.slug === slug && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6 9 17l-5-5" /></svg>}</span>
+                <span className="truncate">{c.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 const NAV = [
   ['queue', 'Review queue'], ['applicants', 'Applicants'], ['blocklist', 'Blocklist'], ['settings', 'Rules & quotas'], ['eval', 'Evaluation'], ['moderation', 'Message check'],
 ] as const
@@ -108,11 +154,7 @@ export function LeadLayout() {
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:px-6">
           <Logo />
           <span className="hidden h-5 w-px bg-line sm:block" />
-          <select value={slug} onChange={e => { const rest = loc.pathname.split('/').slice(3, 4).join('/') || 'queue'; nav(`/c/${e.target.value}/${rest}`) }}
-            aria-label="Community (lead login)" className="h-9 min-w-0 max-w-[31vw] truncate rounded-lg border border-line bg-card px-2.5 text-sm outline-none hover:bg-white/[.04] sm:max-w-none">
-            {communities.length === 0 && <option value={slug}>{slug}</option>}
-            {communities.map(c => <option key={c.slug} value={c.slug}>{c.name}</option>)}
-          </select>
+          <CommunitySwitcher slug={slug} communities={communities} onPick={to => { const rest = loc.pathname.split('/').slice(3, 4).join('/') || 'queue'; nav(`/c/${to}/${rest}`) }} />
           <div className="ml-auto flex items-center gap-2">
             <LlmBadge health={health} />
             <a href={`/apply/${slug}`} target="_blank" rel="noreferrer" className="hidden h-9 items-center rounded-lg border border-line px-3 text-sm text-muted hover:bg-white/[.04] hover:text-fg sm:inline-flex">Public form ↗</a>
