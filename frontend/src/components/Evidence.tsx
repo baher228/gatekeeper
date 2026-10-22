@@ -122,7 +122,7 @@ export function HistoryPanel({ r }: { r: Recommendation }) {
   const max = Math.max(...h.top_features.map(f => Math.abs(f.contribution)), 0.01)
   return (
     <div>
-      <p className="text-sm text-muted">Logistic regression trained on this lead’s {h.n_training} past decisions. P(accept) = <span className="font-mono text-fg">{h.p_accept?.toFixed(2)}</span>. Top contributing features:</p>
+      <p className="text-sm text-muted">Scored at submission by a model trained on {h.n_training} decisions. P(accept) = <span className="font-mono text-fg">{h.p_accept?.toFixed(2)}</span>. Top contributing features:</p>
       <div className="mt-3 space-y-2">
         {h.top_features.map(f => (
           <div key={f.feature} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_3.5rem] items-center gap-3">

@@ -117,14 +117,14 @@ export function LeadLayout() {
             <LlmBadge health={health} />
             <a href={`/apply/${slug}`} target="_blank" rel="noreferrer" className="hidden h-9 items-center rounded-lg border border-line px-3 text-sm text-muted hover:bg-white/[.04] hover:text-fg sm:inline-flex">Public form ↗</a>
             <button type="button" onClick={resetDemo} disabled={resettingDemo}
-              aria-label={resettingDemo ? 'Resetting demo' : 'Reset demo'}
-              title={resettingDemo ? 'Resetting…' : 'Reset demo'}
+              aria-label={resettingDemo ? 'Resetting… (up to a minute)' : 'Reset demo'}
+              title={resettingDemo ? 'Resetting… (up to a minute)' : 'Reset demo'}
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line px-2 text-muted hover:bg-white/[.04] hover:text-fg disabled:opacity-60 sm:w-auto sm:gap-2 sm:px-3">
               <svg className={cx('h-4 w-4', resettingDemo && 'animate-spin')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
                 <path d="M20 7v5h-5M4 17v-5h5" />
                 <path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3" />
               </svg>
-              <span className="hidden text-sm sm:inline">{resettingDemo ? 'Resetting…' : 'Reset demo'}</span>
+              <span className="hidden text-sm sm:inline">{resettingDemo ? 'Resetting… (up to a minute)' : 'Reset demo'}</span>
             </button>
             <Notifications slug={slug} />
           </div>

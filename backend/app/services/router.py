@@ -44,7 +44,7 @@ def route(
         verdict, route_rule, reason_category, confidence = "decline", "incomplete", "minor_issue", 0.8
     elif disagreement:
         reasons.append(
-            f"History model (trained on {history.get('n_training', 0)} decisions) disagrees with application evidence"
+            f"Scored at submission by model trained on {history.get('n_training', 0)} decisions; it disagrees with application evidence"
         )
         verdict, route_rule, confidence = "ask", "disagreement", 0.65
     else:
@@ -59,7 +59,7 @@ def route(
             reasons.append(f"Rule '{check.get('rule', check.get('rule_id', ''))}' {check.get('verdict')}: {check.get('reason', '')}")
         if model_available:
             reasons.append(
-                f"History model (trained on {history.get('n_training', 0)} decisions) P(accept)={p_accept:.2f}"
+                f"Scored at submission by model trained on {history.get('n_training', 0)} decisions; P(accept)={p_accept:.2f}"
             )
         if final_score >= 0.62:
             verdict, route_rule = "accept", "score_accept"
