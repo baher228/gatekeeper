@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-10-22T18:09:43.124459+00:00",
+  "test_set": {
+    "n": 100,
+    "n_accept": 60,
+    "n_decline": 40,
+    "n_scam": 15,
+    "n_edge": 30,
+    "source": "Synthetic held-out fixtures (random.Random(7)); scam message samples from cached UCI SMS Spam rows when available."
+  },
+  "train_set": {
+    "n": 74,
+    "source": "Grok Night London seed decisions only"
+  },
+  "variants": [
+    {
+      "name": "rules_only",
+      "accuracy": 0.7,
+      "accept_precision": 1.0,
+      "accept_recall": 0.6666666666666666,
+      "decline_precision": 0.7272727272727273,
+      "decline_recall": 1.0,
+      "false_block_rate": 0.25,
+      "ask_rate": 0.15,
+      "accuracy_on_decided": 0.8235294117647058,
+      "confusion": {
+        "accept_tp": 30,
+        "accept_fp": 0,
+        "accept_fn": 15,
+        "decline_tp": 40,
+        "decline_fp": 15,
+        "decline_fn": 0,
+        "ask": 15
+      },
+      "n": 100
+    },
+    {
+      "name": "rules_plus_history",
+      "accuracy": 0.38,
+      "accept_precision": 1.0,
+      "accept_recall": 0.5,
+      "decline_precision": 0.21052631578947367,
+      "decline_recall": 1.0,
+      "false_block_rate": 0.5,
+      "ask_rate": 0.32,
+      "accuracy_on_decided": 0.5588235294117647,
+      "confusion": {
+        "accept_tp": 30,
+        "accept_fp": 0,
+        "accept_fn": 30,
+        "decline_tp": 8,
+        "decline_fp": 30,
+        "decline_fn": 0,
+        "ask": 32
+      },
+      "n": 100
+    }
+  ],
+  "notes": [
+    "Both variants use deterministic heuristic rule checks; no Grok/LLM calls were made.",
+    "Ask counts as incorrect in overall accuracy and is excluded from accuracy_on_decided.",
+    "Thresholds were not tuned using the held-out test set.",
+    "Blocklist fixtures cover about half of synthetic scammers; the remainder rely on text and evidence."
+  ],
+  "edge_cases": [
+    {
+      "name": "edge_real_unusual",
+      "label": "accept",
+      "rules_only": "ask",
+      "rules_plus_history": "declined"
+    },
+    {
+      "name": "edge_spammy_real",
+      "label": "accept",
+      "rules_only": "declined",
+      "rules_plus_history": "declined"
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "source": "https://datasets-server.huggingface.co/rows?dataset=ucirvine/sms_spam&config=plain_text&split=train",
+  "licence": "UCI SMS Spam Collection; original dataset CC BY 4.0",
+  "rows": [
+    {
+      "text": "Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA to 87121 to receive entry question(std txt rate)T&C's apply 08452810075over18's\n",
+      "label": "spam"
+    },
+    {
+      "text": "FreeMsg Hey there darling it's been 3 week's now and no word back! I'd like some fun you up for it still? Tb ok! XxX std chgs to send, \u00a31.50 to rcv\n",
+      "label": "spam"
+    },
+    {
+      "text": "WINNER!! As a valued network customer you have been selected to receivea \u00a3900 prize reward! To claim call 09061701461. Claim code KL341. Valid 12 hours only.\n",
+      "label": "spam"
+    },
+    {
+      "text": "Had your mobile 11 months or more? U R entitled to Update to the latest colour mobiles with camera for Free! Call The Mobile Update Co FREE on 08002986030\n",
+      "label": "spam"
+    },
+    {
+      "text": "SIX chances to win CASH! From 100 to 20,000 pounds txt> CSH11 and send to 87575. Cost 150p/day, 6days, 16+ TsandCs apply Reply HL 4 info\n",
+      "label": "spam"
+    },
+    {
+      "text": "URGENT! You have won a 1 week FREE membership in our \u00a3100,000 Prize Jackpot! Txt the word: CLAIM to No: 81010 T&C www.dbuk.net LCCLTD POBOX 4403LDNW1A7RW18\n",
+      "label": "spam"
+    },
+    {
+      "text": "XXXMobileMovieClub: To use your credit, click the WAP link in the next txt message or click here>> http://wap. xxxmobilemovieclub.com?n=QJKGIGHJJGCBL\n",
+      "label": "spam"
+    },
+    {
+      "text": "England v Macedonia - dont miss the goals/team news. Txt ur national team to 87077 eg ENGLAND to 87077 Try:WALES, SCOTLAND 4txt/\u00fa1.20 POBOXox36504W45WQ 16+\n",
+      "label": "spam"
+    },
+    {
+      "text": "Thanks for your subscription to Ringtone UK your mobile will be charged \u00a35/month Please confirm by replying YES or NO. If you reply NO you will not be charged\n",
+      "label": "spam"
+    },
+    {
+      "text": "07732584351 - Rodger Burns - MSG = We tried to call you re your reply to our sms for a free nokia mobile + free camcorder. Please call now 08000930705 for delivery tomorrow\n",
+      "label": "spam"
+    },
+    {
+      "text": "SMS. ac Sptv: The New Jersey Devils and the Detroit Red Wings play Ice Hockey. Correct or Incorrect? End? Reply END SPTV\n",
+      "label": "spam"
+    },
+    {
+      "text": "Congrats! 1 year special cinema pass for 2 is yours. call 09061209465 now! C Suprman V, Matrix3, StarWars3, etc all 4 FREE! bx420-ip4-5we. 150pm. Dont miss out! \n",
+      "label": "spam"
+    },
+    {
+      "text": "As a valued customer, I am pleased to advise you that following recent review of your Mob No. you are awarded with a \u00a31500 Bonus Prize, call 09066364589\n",
+      "label": "spam"
+    },
+    {
+      "text": "Urgent UR awarded a complimentary trip to EuroDisinc Trav, Aco&Entry41 Or \u00a31000. To claim txt DIS to 87121 18+6*\u00a31.50(moreFrmMob. ShrAcomOrSglSuplt)10, LS1 3AJ\n",
+      "label": "spam"
+    },
+    {
+      "text": "Did you hear about the new \"Divorce Barbie\"? It comes with all of Ken's stuff!\n",
+      "label": "spam"
+    },
+    {
+      "text": "Please call our customer service representative on 0800 169 6031 between 10am-9pm as you have WON a guaranteed \u00a31000 cash or \u00a35000 prize!\n",
+      "label": "spam"
+    },
+    {
+      "text": "Your free ringtone is waiting to be collected. Simply text the password \"MIX\" to 85069 to verify. Get Usher and Britney. FML, PO Box 5249, MK17 92H. 450Ppw 16\n",
+      "label": "spam"
+    },
+    {
+      "text": "GENT! We are trying to contact you. Last weekends draw shows that you won a \u00a31000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm\n",
+      "label": "spam"
+    },
+    {
+      "text": "You are a winner U have been specially selected 2 receive \u00a31000 or a 4* holiday (flights inc) speak to a live operator 2 claim 0871277810910p/min (18+) \n",
+      "label": "spam"
+    },
+    {
+      "text": "PRIVATE! Your 2004 Account Statement for 07742676969 shows 786 unredeemed Bonus Points. To claim call 08719180248 Identifier Code: 45239 Expires\n",
+      "label": "spam"
+    },
+    {
+      "text": "URGENT! Your Mobile No. was awarded \u00a32000 Bonus Caller Prize on 5/9/03 This is our final try to contact U! Call from Landline 09064019788 BOX42WR29C, 150PPM\n",
+      "label": "spam"
+    },
+    {
+      "text": "Todays Voda numbers ending 7548 are selected to receive a $350 award. If you have a match please call 08712300220 quoting claim code 4041 standard rates app\n",
+      "label": "spam"
+    },
+    {
+      "text": "Sunshine Quiz Wkly Q! Win a top Sony DVD player if u know which country the Algarve is in? Txt ansr to 82277. \u00a31.50 SP:Tyrone\n",
+      "label": "spam"
+    },
+    {
+      "text": "Want 2 get laid tonight? Want real Dogging locations sent direct 2 ur mob? Join the UK's largest Dogging Network bt Txting GRAVEL to 69888! Nt. ec2a. 31p.msg@150p\n",
+      "label": "spam"
+    },
+    {
+      "text": "You'll not rcv any more msgs from the chat svc. For FREE Hardcore services text GO to: 69988 If u get nothing u must Age Verify with yr network & try again\n",
+      "label": "spam"
+    },
+    {
+      "text": "FreeMsg Why haven't you replied to my text? I'm Randy, sexy, female and live local. Luv to hear from u. Netcollex Ltd 08700621170150p per msg reply Stop to end\n",
+      "label": "spam"
+    },
+    {
+      "text": "Customer service annoncement. You have a New Years delivery waiting for you. Please call 07046744435 now to arrange delivery\n",
+      "label": "spam"
+    },
+    {
+      "text": "You are a winner U have been specially selected 2 receive \u00a31000 cash or a 4* holiday (flights inc) speak to a live operator 2 claim 0871277810810\n",
+      "label": "spam"
+    },
+    {
+      "text": "-PLS STOP bootydelious (32/F) is inviting you to be her friend. Reply YES-434 or NO-434 See her: www.SMS.ac/u/bootydelious STOP? Send STOP FRND to 62468\n",
+      "label": "spam"
+    },
+    {
+      "text": "BangBabes Ur order is on the way. U SHOULD receive a Service Msg 2 download UR content. If U do not, GoTo wap. bangb. tv on UR mobile internet/service menu\n",
+      "label": "spam"
+    },
+    {
+      "text": "URGENT! We are trying to contact you. Last weekends draw shows that you have won a \u00a3900 prize GUARANTEED. Call 09061701939. Claim code S89. Valid 12hrs only\n",
+      "label": "spam"
+    },
+    {
+      "text": "Please call our customer service representative on FREEPHONE 0808 145 4742 between 9am-11pm as you have WON a guaranteed \u00a31000 cash or \u00a35000 prize!\n",
+      "label": "spam"
+    },
+    {
+      "text": "Are you unique enough? Find out from 30th August. www.areyouunique.co.uk\n",
+      "label": "spam"
+    },
+    {
+      "text": "+123 Congratulations - in this week's competition draw u have won the \u00a31450 prize to claim just call 09050002311 b4280703. T&Cs/stop SMS 08718727868. Over 18 only 150ppm\n",
+      "label": "spam"
+    },
+    {
+      "text": "You are guaranteed the latest Nokia Phone, a 40GB iPod MP3 player or a \u00a3500 prize! Txt word: COLLECT to No: 83355! IBHltd LdnW15H 150p/Mtmsgrcvd18+\n",
+      "label": "spam"
+    },
+    {
+      "text": "Boltblue tones for 150p Reply POLY# or MONO# eg POLY3 1. Cha Cha Slide 2. Yeah 3. Slow Jamz 6. Toxic 8. Come With Me or STOP 4 more tones txt MORE\n",
+      "label": "spam"
+    },
+    {
+      "text": "Your credits have been topped up for http://www.bubbletext.com Your renewal Pin is tgxxrz\n",
+      "label": "spam"
+    },
+    {
+      "text": "URGENT!: Your Mobile No. was awarded a \u00a32,000 Bonus Caller Prize on 02/09/03! This is our 2nd attempt to contact YOU! Call 0871-872-9755 BOX95QU\n",
+      "label": "spam"
+    },
+    {
+      "text": "Today's Offer! Claim ur \u00a3150 worth of discount vouchers! Text YES to 85023 now! SavaMob, member offers mobile! T Cs 08717898035. \u00a33.00 Sub. 16 . Unsub reply X\n",
+      "label": "spam"
+    },
+    {
+      "text": "You will recieve your tone within the next 24hrs. For Terms and conditions please see Channel U Teletext Pg 750\n",
+      "label": "spam"
+    },
+    {
+      "text": "PRIVATE! Your 2003 Account Statement for 07815296484 shows 800 un-redeemed S.I.M. points. Call 08718738001 Identifier Code 41782 Expires 18/11/04 \n",
+      "label": "spam"
+    },
+    {
+      "text": "from www.Applausestore.com MonthlySubscription@50p/msg max6/month T&CsC web age16 2stop txt stop\n",
+      "label": "spam"
+    },
+    {
+      "text": "GENT! We are trying to contact you. Last weekends draw shows that you won a \u00a31000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm \n",
+      "label": "spam"
+    },
+    {
+      "text": "You have won ?1,000 cash or a ?2,000 prize! To claim, call09050000327\n",
+      "label": "spam"
+    },
+    {
+      "text": "our mobile number has won \u00a35000, to claim calls us back or ring the claims hot line on 09050005321.\n",
+      "label": "spam"
+    },
+    {
+      "text": "We tried to contact you re your reply to our offer of 750 mins 150 textand a new video phone call 08002988890 now or reply for free delivery tomorrow\n",
+      "label": "spam"
+    },
+    {
+      "text": "For ur chance to win a \u00a3250 wkly shopping spree TXT: SHOP to 80878. T's&C's www.txt-2-shop.com custcare 08715705022, 1x150p/wk\n",
+      "label": "spam"
+    },
+    {
+      "text": "You have been specially selected to receive a 2000 pound award! Call 08712402050 BEFORE the lines close. Cost 10ppm. 16+. T&Cs apply. AG Promo\n",
+      "label": "spam"
+    },
+    {
+      "text": "PRIVATE! Your 2003 Account Statement for 07753741225 shows 800 un-redeemed S. I. M. points. Call 08715203677 Identifier Code: 42478 Expires 24/10/04\n",
+      "label": "spam"
+    },
+    {
+      "text": "You have an important customer service announcement. Call FREEPHONE 0800 542 0825 now!\n",
+      "label": "spam"
+    }
+  ],
+  "fallback_used": false
+}

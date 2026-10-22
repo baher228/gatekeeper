@@ -1,0 +1,3342 @@
+[
+  {
+    "id": "eval-scammer-011",
+    "name": "Evaluation Person 066",
+    "email": "eval66@example.com",
+    "github": "eval-user-10",
+    "devpost": null,
+    "chat_handle": "eval-handle-10",
+    "what_build": "Had your mobile 11 months or more? U R entitled to Update to the latest colour mobiles with camera for Free! Call The Mobile Update Co FREE on 08002986030\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-012",
+    "name": "Evaluation Person 067",
+    "email": "eval67@example.com",
+    "github": "eval-user-11",
+    "devpost": null,
+    "chat_handle": "eval-handle-11",
+    "what_build": "Are you unique enough? Find out from 30th August. www.areyouunique.co.uk\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-013",
+    "name": "Evaluation Person 043",
+    "email": "eval43@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-12",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-012",
+    "name": "Evaluation Person 082",
+    "email": "eval82@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-11",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-004",
+    "name": "Evaluation Person 004",
+    "email": "eval4@example.com",
+    "github": "eval-user-3",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-3",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-017",
+    "name": "Evaluation Person 047",
+    "email": "eval47@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-16",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-023",
+    "name": "Evaluation Person 023",
+    "email": "eval23@example.com",
+    "github": "eval-user-22",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-22",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-011",
+    "name": "Evaluation Person 041",
+    "email": "eval41@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-10",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-006",
+    "name": "Evaluation Person 076",
+    "email": "eval76@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-5",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-001",
+    "name": "Evaluation Person 001",
+    "email": "eval1@example.com",
+    "github": "eval-user-0",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-0",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-005",
+    "name": "Evaluation Person 060",
+    "email": "eval60@example.com",
+    "github": "eval-user-4",
+    "devpost": null,
+    "chat_handle": "eval-handle-4",
+    "what_build": "Had your mobile 11 months or more? U R entitled to Update to the latest colour mobiles with camera for Free! Call The Mobile Update Co FREE on 08002986030\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-scammer-003",
+    "name": "Evaluation Person 058",
+    "email": "eval58@example.com",
+    "github": "eval-user-2",
+    "devpost": null,
+    "chat_handle": "eval-handle-2",
+    "what_build": "FreeMsg Why haven't you replied to my text? I'm Randy, sexy, female and live local. Luv to hear from u. Netcollex Ltd 08700621170150p per msg reply Stop to end\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-typical_decline-019",
+    "name": "Evaluation Person 049",
+    "email": "eval49@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-18",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-016",
+    "name": "Evaluation Person 046",
+    "email": "eval46@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-15",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-015",
+    "name": "Evaluation Person 100",
+    "email": "eval100@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-14",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-017",
+    "name": "Evaluation Person 017",
+    "email": "eval17@example.com",
+    "github": "eval-user-16",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-16",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-026",
+    "name": "Evaluation Person 026",
+    "email": "eval26@example.com",
+    "github": "eval-user-25",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-25",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-015",
+    "name": "Evaluation Person 015",
+    "email": "eval15@example.com",
+    "github": "eval-user-14",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-14",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-012",
+    "name": "Evaluation Person 097",
+    "email": "eval97@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-11",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-004",
+    "name": "Evaluation Person 059",
+    "email": "eval59@example.com",
+    "github": "eval-user-3",
+    "devpost": null,
+    "chat_handle": "eval-handle-3",
+    "what_build": "from www.Applausestore.com MonthlySubscription@50p/msg max6/month T&CsC web age16 2stop txt stop\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-scammer-006",
+    "name": "Evaluation Person 061",
+    "email": "eval61@example.com",
+    "github": "eval-user-5",
+    "devpost": null,
+    "chat_handle": "eval-handle-5",
+    "what_build": "SIX chances to win CASH! From 100 to 20,000 pounds txt> CSH11 and send to 87575. Cost 150p/day, 6days, 16+ TsandCs apply Reply HL 4 info\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-scammer-007",
+    "name": "Evaluation Person 062",
+    "email": "eval62@example.com",
+    "github": "eval-user-6",
+    "devpost": null,
+    "chat_handle": "eval-handle-6",
+    "what_build": "You are guaranteed the latest Nokia Phone, a 40GB iPod MP3 player or a \u00a3500 prize! Txt word: COLLECT to No: 83355! IBHltd LdnW15H 150p/Mtmsgrcvd18+\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-edge_real_unusual-009",
+    "name": "Evaluation Person 079",
+    "email": "eval79@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-8",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-008",
+    "name": "Evaluation Person 078",
+    "email": "eval78@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-7",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-014",
+    "name": "Evaluation Person 069",
+    "email": "eval69@example.com",
+    "github": "eval-user-13",
+    "devpost": null,
+    "chat_handle": "eval-handle-13",
+    "what_build": "WINNER!! As a valued network customer you have been selected to receivea \u00a3900 prize reward! To claim call 09061701461. Claim code KL341. Valid 12 hours only.\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-003",
+    "name": "Evaluation Person 003",
+    "email": "eval3@example.com",
+    "github": "eval-user-2",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-2",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-006",
+    "name": "Evaluation Person 036",
+    "email": "eval36@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-5",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-002",
+    "name": "Evaluation Person 002",
+    "email": "eval2@example.com",
+    "github": "eval-user-1",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-1",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-015",
+    "name": "Evaluation Person 085",
+    "email": "eval85@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-14",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-013",
+    "name": "Evaluation Person 068",
+    "email": "eval68@example.com",
+    "github": "eval-user-12",
+    "devpost": null,
+    "chat_handle": "eval-handle-12",
+    "what_build": "Urgent UR awarded a complimentary trip to EuroDisinc Trav, Aco&Entry41 Or \u00a31000. To claim txt DIS to 87121 18+6*\u00a31.50(moreFrmMob. ShrAcomOrSglSuplt)10, LS1 3AJ\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-009",
+    "name": "Evaluation Person 094",
+    "email": "eval94@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-8",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-010",
+    "name": "Evaluation Person 010",
+    "email": "eval10@example.com",
+    "github": "eval-user-9",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-9",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-012",
+    "name": "Evaluation Person 042",
+    "email": "eval42@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-11",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-011",
+    "name": "Evaluation Person 011",
+    "email": "eval11@example.com",
+    "github": "eval-user-10",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-10",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-009",
+    "name": "Evaluation Person 064",
+    "email": "eval64@example.com",
+    "github": "eval-user-8",
+    "devpost": null,
+    "chat_handle": "eval-handle-8",
+    "what_build": "Want 2 get laid tonight? Want real Dogging locations sent direct 2 ur mob? Join the UK's largest Dogging Network bt Txting GRAVEL to 69888! Nt. ec2a. 31p.msg@150p\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-003",
+    "name": "Evaluation Person 033",
+    "email": "eval33@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-2",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-010",
+    "name": "Evaluation Person 065",
+    "email": "eval65@example.com",
+    "github": "eval-user-9",
+    "devpost": null,
+    "chat_handle": "eval-handle-9",
+    "what_build": "URGENT!: Your Mobile No. was awarded a \u00a32,000 Bonus Caller Prize on 02/09/03! This is our 2nd attempt to contact YOU! Call 0871-872-9755 BOX95QU\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-005",
+    "name": "Evaluation Person 005",
+    "email": "eval5@example.com",
+    "github": "eval-user-4",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-4",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-009",
+    "name": "Evaluation Person 039",
+    "email": "eval39@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-8",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-014",
+    "name": "Evaluation Person 084",
+    "email": "eval84@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-13",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-003",
+    "name": "Evaluation Person 088",
+    "email": "eval88@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-2",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-022",
+    "name": "Evaluation Person 022",
+    "email": "eval22@example.com",
+    "github": "eval-user-21",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-21",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-008",
+    "name": "Evaluation Person 063",
+    "email": "eval63@example.com",
+    "github": "eval-user-7",
+    "devpost": null,
+    "chat_handle": "eval-handle-7",
+    "what_build": "XXXMobileMovieClub: To use your credit, click the WAP link in the next txt message or click here>> http://wap. xxxmobilemovieclub.com?n=QJKGIGHJJGCBL\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-typical_decline-004",
+    "name": "Evaluation Person 034",
+    "email": "eval34@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-3",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-023",
+    "name": "Evaluation Person 053",
+    "email": "eval53@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-22",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-007",
+    "name": "Evaluation Person 037",
+    "email": "eval37@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-6",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-010",
+    "name": "Evaluation Person 080",
+    "email": "eval80@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-9",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-022",
+    "name": "Evaluation Person 052",
+    "email": "eval52@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-21",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-015",
+    "name": "Evaluation Person 045",
+    "email": "eval45@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-14",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-011",
+    "name": "Evaluation Person 096",
+    "email": "eval96@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-10",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-013",
+    "name": "Evaluation Person 083",
+    "email": "eval83@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-12",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-007",
+    "name": "Evaluation Person 092",
+    "email": "eval92@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-6",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-020",
+    "name": "Evaluation Person 020",
+    "email": "eval20@example.com",
+    "github": "eval-user-19",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-19",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-010",
+    "name": "Evaluation Person 095",
+    "email": "eval95@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-9",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-002",
+    "name": "Evaluation Person 057",
+    "email": "eval57@example.com",
+    "github": "eval-user-1",
+    "devpost": null,
+    "chat_handle": "eval-handle-1",
+    "what_build": "07732584351 - Rodger Burns - MSG = We tried to call you re your reply to our sms for a free nokia mobile + free camcorder. Please call now 08000930705 for delivery tomorrow\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  },
+  {
+    "id": "eval-edge_real_unusual-007",
+    "name": "Evaluation Person 077",
+    "email": "eval77@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-6",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-030",
+    "name": "Evaluation Person 030",
+    "email": "eval30@example.com",
+    "github": "eval-user-29",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-29",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-021",
+    "name": "Evaluation Person 021",
+    "email": "eval21@example.com",
+    "github": "eval-user-20",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-20",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-020",
+    "name": "Evaluation Person 050",
+    "email": "eval50@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-19",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-028",
+    "name": "Evaluation Person 028",
+    "email": "eval28@example.com",
+    "github": "eval-user-27",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-27",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-005",
+    "name": "Evaluation Person 035",
+    "email": "eval35@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-4",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-014",
+    "name": "Evaluation Person 044",
+    "email": "eval44@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-13",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-002",
+    "name": "Evaluation Person 032",
+    "email": "eval32@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-1",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-027",
+    "name": "Evaluation Person 027",
+    "email": "eval27@example.com",
+    "github": "eval-user-26",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-26",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-001",
+    "name": "Evaluation Person 086",
+    "email": "eval86@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-0",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-013",
+    "name": "Evaluation Person 098",
+    "email": "eval98@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-12",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-013",
+    "name": "Evaluation Person 013",
+    "email": "eval13@example.com",
+    "github": "eval-user-12",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-12",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-018",
+    "name": "Evaluation Person 048",
+    "email": "eval48@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-17",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-025",
+    "name": "Evaluation Person 025",
+    "email": "eval25@example.com",
+    "github": "eval-user-24",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-24",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-014",
+    "name": "Evaluation Person 014",
+    "email": "eval14@example.com",
+    "github": "eval-user-13",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-13",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-024",
+    "name": "Evaluation Person 024",
+    "email": "eval24@example.com",
+    "github": "eval-user-23",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-23",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-010",
+    "name": "Evaluation Person 040",
+    "email": "eval40@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-9",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-006",
+    "name": "Evaluation Person 091",
+    "email": "eval91@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-5",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-015",
+    "name": "Evaluation Person 070",
+    "email": "eval70@example.com",
+    "github": "eval-user-14",
+    "devpost": null,
+    "chat_handle": "eval-handle-14",
+    "what_build": "URGENT! You have won a 1 week FREE membership in our \u00a3100,000 Prize Jackpot! Txt the word: CLAIM to No: 81010 T&C www.dbuk.net LCCLTD POBOX 4403LDNW1A7RW18\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-019",
+    "name": "Evaluation Person 019",
+    "email": "eval19@example.com",
+    "github": "eval-user-18",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-18",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-014",
+    "name": "Evaluation Person 099",
+    "email": "eval99@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-13",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-008",
+    "name": "Evaluation Person 038",
+    "email": "eval38@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-7",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-018",
+    "name": "Evaluation Person 018",
+    "email": "eval18@example.com",
+    "github": "eval-user-17",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-17",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-002",
+    "name": "Evaluation Person 072",
+    "email": "eval72@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-1",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-006",
+    "name": "Evaluation Person 006",
+    "email": "eval6@example.com",
+    "github": "eval-user-5",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-5",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-005",
+    "name": "Evaluation Person 090",
+    "email": "eval90@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-4",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-007",
+    "name": "Evaluation Person 007",
+    "email": "eval7@example.com",
+    "github": "eval-user-6",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-6",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-021",
+    "name": "Evaluation Person 051",
+    "email": "eval51@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-20",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-002",
+    "name": "Evaluation Person 087",
+    "email": "eval87@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-1",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-004",
+    "name": "Evaluation Person 074",
+    "email": "eval74@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-3",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "researcher",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-008",
+    "name": "Evaluation Person 093",
+    "email": "eval93@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-7",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-005",
+    "name": "Evaluation Person 075",
+    "email": "eval75@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-4",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_spammy_real-004",
+    "name": "Evaluation Person 089",
+    "email": "eval89@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-3",
+    "what_build": "I study scam messages and want to build a community workshop that teaches people to recognize spam and protect one another. I will share a demo and give feedback.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_spammy_real",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-011",
+    "name": "Evaluation Person 081",
+    "email": "eval81@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-10",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-029",
+    "name": "Evaluation Person 029",
+    "email": "eval29@example.com",
+    "github": "eval-user-28",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-28",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-016",
+    "name": "Evaluation Person 016",
+    "email": "eval16@example.com",
+    "github": "eval-user-15",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-15",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-003",
+    "name": "Evaluation Person 073",
+    "email": "eval73@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-2",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-008",
+    "name": "Evaluation Person 008",
+    "email": "eval8@example.com",
+    "github": "eval-user-7",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-7",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-025",
+    "name": "Evaluation Person 055",
+    "email": "eval55@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-24",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-edge_real_unusual-001",
+    "name": "Evaluation Person 071",
+    "email": "eval71@example.com",
+    "github": null,
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-0",
+    "what_build": "I wrote a careful paper and built a small demo to evaluate language models for accessible public services. I have no established GitHub yet, but I can present the work and welcome critique from London researchers.",
+    "category": "first_timer",
+    "label": "accept",
+    "tag": "edge_real_unusual",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 6,
+        "public_repos": 0,
+        "followers": 0,
+        "recent_push_days": 2
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 1
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-012",
+    "name": "Evaluation Person 012",
+    "email": "eval12@example.com",
+    "github": "eval-user-11",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-11",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-001",
+    "name": "Evaluation Person 031",
+    "email": "eval31@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-0",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_builder-009",
+    "name": "Evaluation Person 009",
+    "email": "eval9@example.com",
+    "github": "eval-user-8",
+    "devpost": "demo-project",
+    "chat_handle": "eval-handle-8",
+    "what_build": "I shipped a working AI demo for London community gardens. The repo is public, I test it weekly, and I will share feedback and help others build.",
+    "category": "builder",
+    "label": "accept",
+    "tag": "typical_builder",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 1200,
+        "public_repos": 8,
+        "followers": 14,
+        "recent_push_days": 6
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 1,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-typical_decline-024",
+    "name": "Evaluation Person 054",
+    "email": "eval54@example.com",
+    "github": null,
+    "devpost": null,
+    "chat_handle": "eval-handle-23",
+    "what_build": "I am interested in joining and networking with people in London.",
+    "category": "builder",
+    "label": "decline",
+    "tag": "typical_decline",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 0,
+        "public_repos": 0,
+        "followers": 0
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": []
+  },
+  {
+    "id": "eval-scammer-001",
+    "name": "Evaluation Person 056",
+    "email": "eval56@example.com",
+    "github": "eval-user-0",
+    "devpost": null,
+    "chat_handle": "eval-handle-0",
+    "what_build": "URGENT! Your Mobile No. was awarded \u00a32000 Bonus Caller Prize on 5/9/03 This is our final try to contact U! Call from Landline 09064019788 BOX42WR29C, 150PPM\n",
+    "category": "builder",
+    "label": "decline",
+    "tag": "scammer",
+    "evidence": {
+      "github": {
+        "status": "simulated",
+        "account_age_days": 20,
+        "public_repos": 1,
+        "followers": 1,
+        "recent_push_days": 12
+      },
+      "devpost": {
+        "status": "simulated",
+        "projects": 0,
+        "wins": 0
+      },
+      "stopforumspam": {
+        "status": "simulated",
+        "email_appears": false,
+        "username_appears": false,
+        "confidence": 0
+      }
+    },
+    "blocklist": [
+      {
+        "entry_id": "synthetic-confirmed",
+        "identifier_type": "handle",
+        "status": "confirmed",
+        "reporting_community": "Synthetic test community",
+        "evidence": "Synthetic fixture",
+        "links": [],
+        "reported_at": null
+      }
+    ]
+  }
+]
