@@ -57,17 +57,22 @@ export default function SettingsPage() {
           <Card>
             <Label>Guest categories & quotas</Label>
             <div className="mt-4 space-y-3">
-              <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_4.5rem_4.5rem_2rem] gap-2 font-mono text-[10px] uppercase tracking-wider text-faint">
+              <div className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_4.5rem_4.5rem_2rem] gap-2 font-mono text-[10px] uppercase tracking-wider text-faint sm:grid">
                 <span>slug</span><span>name</span><span>seats</span><span>bypass</span><span />
               </div>
               {cats.map((k, i) => (
                 <div key={i}>
-                  <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_4.5rem_4.5rem_2rem] items-center gap-2">
-                    <input className={`${inputCls} font-mono text-xs`} value={k.slug} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, slug: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '_') } : x))} />
-                    <input className={inputCls} value={k.name} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, name: e.target.value } : x))} />
-                    <input type="number" min={0} className={inputCls} value={k.quota} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, quota: Number(e.target.value) } : x))} />
-                    <label className="flex justify-center"><input type="checkbox" className="h-4 w-4 accent-white" checked={k.bypass_quota} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, bypass_quota: e.target.checked } : x))} /></label>
-                    <Button variant="ghost" className="px-0" aria-label="Remove category" onClick={() => setCats(cs => cs.filter((_, j) => j !== i))}>✕</Button>
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_4.5rem_4.5rem_2rem]">
+                    <input aria-label="Category name" className={`${inputCls} col-span-2 row-start-1 min-w-0 sm:col-span-1 sm:col-start-2 sm:row-start-1`} value={k.name} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, name: e.target.value } : x))} />
+                    <input aria-label="Category slug" className={`${inputCls} col-start-1 row-start-2 min-w-0 font-mono text-xs sm:col-start-1 sm:row-start-1`} value={k.slug} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, slug: e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '_') } : x))} />
+                    <div className="col-start-2 row-start-2 grid grid-cols-[4.5rem_auto_2rem] items-center gap-2 sm:contents">
+                      <input aria-label="Seats" type="number" min={0} className={`${inputCls} min-w-0 sm:col-start-3 sm:row-start-1`} value={k.quota} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, quota: Number(e.target.value) } : x))} />
+                      <label title="Bypass quota" className="flex items-center justify-center gap-1 text-[10px] text-muted sm:col-start-4 sm:row-start-1">
+                        <span className="sm:hidden">Bypass</span>
+                        <input aria-label="Bypass quota" type="checkbox" className="h-4 w-4 accent-white" checked={k.bypass_quota} onChange={e => setCats(cs => cs.map((x, j) => j === i ? { ...x, bypass_quota: e.target.checked } : x))} />
+                      </label>
+                      <Button variant="ghost" className="shrink-0 px-0 sm:col-start-5 sm:row-start-1" aria-label="Remove category" onClick={() => setCats(cs => cs.filter((_, j) => j !== i))}>✕</Button>
+                    </div>
                   </div>
                   {usage[k.slug] && <div className="mt-1 font-mono text-[11px] text-muted">{usage[k.slug].used} accepted · {usage[k.slug].waitlisted} waitlisted</div>}
                 </div>
