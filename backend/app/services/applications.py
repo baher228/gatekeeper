@@ -145,7 +145,7 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
             """insert into decisions(applicant_id,community_id,verdict,reason_category,note,source,features)
             values (%s,%s,%s,%s,%s,'auto',%s)""",
             (
-                aid, community["id"], recommendation["verdict"], reason,
+                aid, community["id"], "ask_more" if recommendation["verdict"] == "ask" else recommendation["verdict"], reason,
                 recommendation["reasons"][0] if recommendation["reasons"] else None,
                 Jsonb(features),
             ),
