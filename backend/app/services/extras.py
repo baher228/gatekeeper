@@ -50,6 +50,7 @@ def identity_extras(conn, community_id, applicant: dict) -> dict:
         "own_notes": [],
         "shared_notes": [],
         "shared_flags": [],
+        "liked": False,
     }
     hashes = identity_hashes(applicant)
     if not hashes:
@@ -82,6 +83,13 @@ def identity_extras(conn, community_id, applicant: dict) -> dict:
             and n.identity_hash=any(%s) order by n.created_at desc""",
             (community_id, hashes),
         ).fetchall()
+        liked = conn.execute(
+            """select exists(
+                select 1 from attendee_likes
+                where community_id=%s and identity_hash=any(%s)
+            ) as liked""",
+            (community_id, hashes),
+        ).fetchone()["liked"]
 
     own_notes = [_note(row) for row in own_rows]
     shared_notes = [_note(row) for row in shared_rows]
@@ -114,6 +122,7 @@ def identity_extras(conn, community_id, applicant: dict) -> dict:
         "own_notes": own_notes,
         "shared_notes": shared_notes,
         "shared_flags": shared_flags,
+        "liked": liked,
     }
 
 

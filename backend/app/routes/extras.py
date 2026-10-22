@@ -8,7 +8,7 @@ from app.db import as_community, connect
 from app.schemas import AttendeeNoteIn, BanApplicantIn, CommunityBanIn
 from app.services.applications import community_by_slug
 from app.services.blocklist import identifier_hash
-from app.services.extras import _identifiers, primary_hash
+from app.services.extras import _identifiers, identity_hashes, primary_hash
 
 router = APIRouter(prefix="/api")
 
@@ -82,6 +82,41 @@ def ban_applicant(applicant_id: UUID, body: BanApplicantIn):
                 ).fetchone()
                 count += int(inserted is not None)
         return {"ok": True, "count": count}
+
+
+@router.post("/applicants/{applicant_id}/like")
+def like_applicant(applicant_id: UUID):
+    with connect() as conn:
+        applicant = _applicant(conn, applicant_id)
+        if not applicant:
+            raise HTTPException(404, "Applicant not found")
+        digest = primary_hash(applicant)
+        if not digest:
+            raise HTTPException(422, "Applicant has no identity to like")
+        with as_community(conn, applicant["community_id"]):
+            conn.execute(
+                """insert into attendee_likes(community_id,identity_hash)
+                values (%s,%s) on conflict (community_id,identity_hash) do nothing""",
+                (applicant["community_id"], digest),
+            )
+        return {"liked": True}
+
+
+@router.delete("/applicants/{applicant_id}/like")
+def unlike_applicant(applicant_id: UUID):
+    with connect() as conn:
+        applicant = _applicant(conn, applicant_id)
+        if not applicant:
+            raise HTTPException(404, "Applicant not found")
+        hashes = identity_hashes(applicant)
+        with as_community(conn, applicant["community_id"]):
+            if hashes:
+                conn.execute(
+                    """delete from attendee_likes
+                    where community_id=%s and identity_hash=any(%s)""",
+                    (applicant["community_id"], hashes),
+                )
+        return {"liked": False}
 
 
 @router.post("/communities/{slug}/bans")
