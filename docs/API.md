@@ -19,6 +19,7 @@ Base: `http://localhost:8000/api`. All bodies JSON, all shapes are Pydantic v2 m
 - `POST /applicants/{id}/decision` body `{verdict: "accept"|"ask_more"|"decline", reason_category?: ReasonCategory, note?}` → `{applicant: ApplicantDetail, model: ModelInfo}` (decline requires reason_category; retrains the history model synchronously)
 - `POST /applicants/{id}/recheck` → `ApplicantDetail` (400 with `detail` if not reconsiderable / cool-down not over)
 - `POST /communities/{slug}/recheck-due` → `{checked: int, changed: [ApplicantSummary]}` (same job APScheduler runs daily)
+- `POST /demo/reset` → `{ok: true, applicants: int, queue: int}` (restores seed data; disabled with `DEMO_RESET=0`)
 
 `ReasonCategory = "skill_gap"|"minor_issue"|"capacity"|"scam_abuse"|"rules_mismatch"`
 `Status = "accepted"|"ask"|"declined"|"waitlisted"`

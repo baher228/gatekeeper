@@ -82,12 +82,26 @@ export function LeadLayout() {
   const loc = useLocation()
   const [communities, setCommunities] = useState<CommunityRef[]>([])
   const [health, setHealth] = useState<Health | null>(null)
+  const [resettingDemo, setResettingDemo] = useState(false)
+  const [resetError, setResetError] = useState<string | null>(null)
   useEffect(() => { localStorage.setItem('gk.community', slug) }, [slug])
   useEffect(() => {
     api.communities().then(setCommunities).catch(() => {})
     api.health().then(setHealth).catch(() => {})
   }, [])
   useEffect(() => { window.scrollTo(0, 0) }, [loc.pathname])
+  const resetDemo = async () => {
+    if (!window.confirm('Reset demo data? Seed applicants, decisions and blocklist reports go back to the starting state. Real applications are kept.')) return
+    setResetError(null)
+    setResettingDemo(true)
+    try {
+      await api.resetDemo()
+      window.location.reload()
+    } catch (error) {
+      setResetError(error instanceof Error ? error.message : 'Could not reset demo data')
+      setResettingDemo(false)
+    }
+  }
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-20 border-b border-line bg-bg/90 backdrop-blur">
@@ -95,13 +109,23 @@ export function LeadLayout() {
           <Logo />
           <span className="hidden h-5 w-px bg-line sm:block" />
           <select value={slug} onChange={e => { const rest = loc.pathname.split('/').slice(3, 4).join('/') || 'queue'; nav(`/c/${e.target.value}/${rest}`) }}
-            aria-label="Community (lead login)" className="h-9 min-w-0 max-w-[46vw] truncate rounded-lg border border-line bg-card px-2.5 text-sm outline-none hover:bg-white/[.04] sm:max-w-none">
+            aria-label="Community (lead login)" className="h-9 min-w-0 max-w-[31vw] truncate rounded-lg border border-line bg-card px-2.5 text-sm outline-none hover:bg-white/[.04] sm:max-w-none">
             {communities.length === 0 && <option value={slug}>{slug}</option>}
             {communities.map(c => <option key={c.slug} value={c.slug}>{c.name}</option>)}
           </select>
           <div className="ml-auto flex items-center gap-2">
             <LlmBadge health={health} />
             <a href={`/apply/${slug}`} target="_blank" rel="noreferrer" className="hidden h-9 items-center rounded-lg border border-line px-3 text-sm text-muted hover:bg-white/[.04] hover:text-fg sm:inline-flex">Public form ↗</a>
+            <button type="button" onClick={resetDemo} disabled={resettingDemo}
+              aria-label={resettingDemo ? 'Resetting demo' : 'Reset demo'}
+              title={resettingDemo ? 'Resetting…' : 'Reset demo'}
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line px-2 text-muted hover:bg-white/[.04] hover:text-fg disabled:opacity-60 sm:w-auto sm:gap-2 sm:px-3">
+              <svg className={cx('h-4 w-4', resettingDemo && 'animate-spin')} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                <path d="M20 7v5h-5M4 17v-5h5" />
+                <path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3" />
+              </svg>
+              <span className="hidden text-sm sm:inline">{resettingDemo ? 'Resetting…' : 'Reset demo'}</span>
+            </button>
             <Notifications slug={slug} />
           </div>
         </div>
@@ -111,6 +135,7 @@ export function LeadLayout() {
           ))}
         </nav>
       </header>
+      {resetError && <div role="alert" className="fixed right-4 top-16 z-50 max-w-[calc(100vw-2rem)] rounded-lg border border-decline/25 bg-card px-3 py-2 text-sm text-decline shadow-lg">Couldn’t reset demo: {resetError}</div>}
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6"><Outlet context={{ health }} /></main>
     </div>
   )

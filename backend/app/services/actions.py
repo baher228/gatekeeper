@@ -72,16 +72,18 @@ def lead_decision(applicant_id: str, decision: DecisionIn) -> dict | None:
         )
         conn.execute(
             """insert into decisions(applicant_id,community_id,verdict,reason_category,note,
-            source,features,created_at) values (%s,%s,%s,%s,%s,'lead',%s,%s)""",
+            source,features,created_at,is_seed) values (%s,%s,%s,%s,%s,'lead',%s,%s,%s)""",
             (
                 applicant_id, app_row["community_id"], decision.verdict,
                 decision.reason_category, decision.note, Jsonb(app_row["features"] or {}), now,
+                app_row["is_seed"],
             ),
         )
         if status == "ask":
             conn.execute(
-                "insert into notifications(community_id,applicant_id,kind,message) values (%s,%s,'needs_review',%s)",
-                (app_row["community_id"], applicant_id, f"{app_row['name']} needs a lead review."),
+                """insert into notifications(community_id,applicant_id,kind,message,is_seed)
+                values (%s,%s,'needs_review',%s,%s)""",
+                (app_row["community_id"], applicant_id, f"{app_row['name']} needs a lead review.", app_row["is_seed"]),
             )
         detail = applicant_detail(conn, applicant_id)
         community_id = str(app_row["community_id"])
@@ -173,12 +175,14 @@ async def recheck_applicant(applicant_id: str) -> dict | None:
             ),
         )
         conn.execute(
-            "insert into notifications(community_id,applicant_id,kind,message) values (%s,%s,'reconsidered',%s)",
-            (row["community_id"], applicant_id, note),
+            """insert into notifications(community_id,applicant_id,kind,message,is_seed)
+            values (%s,%s,'reconsidered',%s,%s)""",
+            (row["community_id"], applicant_id, note, row["is_seed"]),
         )
         if status == "ask":
             conn.execute(
-                "insert into notifications(community_id,applicant_id,kind,message) values (%s,%s,'needs_review',%s)",
-                (row["community_id"], applicant_id, f"{row['name']} needs a lead review after reconsideration."),
+                """insert into notifications(community_id,applicant_id,kind,message,is_seed)
+                values (%s,%s,'needs_review',%s,%s)""",
+                (row["community_id"], applicant_id, f"{row['name']} needs a lead review after reconsideration.", row["is_seed"]),
             )
         return applicant_detail(conn, applicant_id)

@@ -157,8 +157,30 @@ def seed(*, if_empty=False) -> None:
         found = conn.execute("select count(*) as n from communities").fetchone()["n"]
         if if_empty and found:
             return
-        conn.execute("delete from appeals where entry_id in (select id from blocklist_entries where is_seed)")
-        conn.execute("delete from blocklist_entries where is_seed")
+        for slug in ("shoreditch-builders", "grok-night-london"):
+            existing = conn.execute(
+                "select is_seed from communities where slug=%s", (slug,)
+            ).fetchone()
+            if existing and not existing["is_seed"]:
+                raise RuntimeError(f"Refusing to reset non-seed community {slug}")
+        conn.execute(
+            """update applicants set is_seed=true where is_seed=false and (
+            lower(ltrim(btrim(coalesce(github,'')), '@')) like 'demo-%' or
+            lower(ltrim(btrim(coalesce(devpost,'')), '@')) like 'demo-%' or
+            lower(ltrim(btrim(coalesce(chat_handle,'')), '@')) like 'demo-%')"""
+        )
+        conn.execute(
+            """update decisions set is_seed=true where is_seed=false
+            and applicant_id in (select id from applicants where is_seed=true)"""
+        )
+        conn.execute(
+            """update notifications set is_seed=true where is_seed=false and applicant_id in
+            (select id from applicants where is_seed=true)"""
+        )
+        conn.execute(
+            """delete from blocklist_entries as b where b.is_seed
+            and not exists (select 1 from appeals as a where a.entry_id=b.id)"""
+        )
         conn.execute("delete from notifications where is_seed")
         conn.execute("delete from decisions where is_seed")
         conn.execute("delete from applicants where is_seed")
@@ -171,16 +193,20 @@ def seed(*, if_empty=False) -> None:
                 """insert into communities(slug,name,description,rules,reconsider_cooldown_days,is_seed)
                 values (%s,%s,%s,%s,60,true) on conflict(slug) do update set
                 name=excluded.name, description=excluded.description, rules=excluded.rules,
-                reconsider_cooldown_days=60, is_seed=true returning id""",
+                reconsider_cooldown_days=60, is_seed=true
+                where communities.is_seed=true returning id""",
                 (slug, name, description, Jsonb(rules)),
             ).fetchone()
+            if not row:
+                raise RuntimeError(f"Refusing to reset non-seed community {slug}")
             communities[slug] = row["id"]
         community_ids = communities
         for slug, cid in community_ids.items():
-            conn.execute("delete from categories where community_id=%s", (cid,))
             for cat_slug, cat_name, quota, bypass in CATEGORIES:
                 conn.execute(
-                    "insert into categories(community_id,slug,name,quota,bypass_quota) values (%s,%s,%s,%s,%s)",
+                    """insert into categories(community_id,slug,name,quota,bypass_quota)
+                    values (%s,%s,%s,%s,%s) on conflict (community_id,slug) do update set
+                    name=excluded.name, quota=excluded.quota, bypass_quota=excluded.bypass_quota""",
                     (cid, cat_slug, cat_name, quota, bypass),
                 )
 
@@ -243,7 +269,7 @@ def seed(*, if_empty=False) -> None:
             history_count += 1
 
         conn.commit()
-        model_info = train_model(str(b_id))
+        model_info = train_model(str(b_id), seed_only=True)
         if not model_info["available"]:
             raise RuntimeError("The synthetic seed history did not produce a trainable model")
 

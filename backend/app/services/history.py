@@ -89,12 +89,18 @@ def predict_from_model(
     }
 
 
-def train_model(community_id: str, categories: list[str] | None = None) -> dict:
+def train_model(
+    community_id: str,
+    categories: list[str] | None = None,
+    *,
+    seed_only: bool = False,
+) -> dict:
     with connect() as conn:
         rows = conn.execute(
             "select features, verdict, created_at from decisions where community_id=%s "
+            "and (%s=false or is_seed=true) "
             "and source in ('lead','seed') and verdict in ('accept','decline') order by created_at",
-            (community_id,),
+            (community_id, seed_only),
         ).fetchall()
         categories = categories or [
             row["slug"] for row in conn.execute(

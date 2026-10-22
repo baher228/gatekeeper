@@ -66,6 +66,10 @@ def _lookup_blocklist(conn, community_id: str, applicant: dict) -> list[dict]:
 
 async def apply_application(slug: str, incoming: dict) -> dict | None:
     applicant = dict(incoming)
+    is_seed = any(
+        str(applicant.get(field) or "").strip().lstrip("@").lower().startswith("demo-")
+        for field in ("github", "devpost", "chat_handle")
+    )
     handle = applicant.get("chat_handle") or applicant.get("github") or ""
     fixture = DEMO_FIXTURES.get(handle.strip().lstrip("@"))
     evidence = await gather_evidence(applicant, fixture)
@@ -130,7 +134,7 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
             (community_id,name,email,phone,github,devpost,chat_handle,what_build,category,status,
              decision_source,final_score,confidence,recommendation,features,decline_reason,decided_at,
              reconsider_after,previous_decline,is_seed)
-            values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'auto',%s,%s,%s,%s,%s,%s,%s,%s,false)
+            values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'auto',%s,%s,%s,%s,%s,%s,%s,%s,%s)
             returning id""",
             (
                 community["id"], applicant["name"], applicant["email"], applicant.get("phone"),
@@ -139,26 +143,29 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
                 recommendation["final_score"], recommendation["confidence"], Jsonb(recommendation),
                 Jsonb(features), reason, now, reconsider_after,
                 Jsonb(previous_decline) if previous_decline else None,
+                is_seed,
             ),
         ).fetchone()["id"]
         conn.execute(
-            """insert into decisions(applicant_id,community_id,verdict,reason_category,note,source,features)
-            values (%s,%s,%s,%s,%s,'auto',%s)""",
+            """insert into decisions(applicant_id,community_id,verdict,reason_category,note,
+            source,features,is_seed) values (%s,%s,%s,%s,%s,'auto',%s,%s)""",
             (
                 aid, community["id"], "ask_more" if recommendation["verdict"] == "ask" else recommendation["verdict"], reason,
                 recommendation["reasons"][0] if recommendation["reasons"] else None,
-                Jsonb(features),
+                Jsonb(features), is_seed,
             ),
         )
         if result["status"] == "ask":
             conn.execute(
-                "insert into notifications(community_id,applicant_id,kind,message) values (%s,%s,'needs_review',%s)",
-                (community["id"], aid, f"{applicant['name']} needs a lead review."),
+                """insert into notifications(community_id,applicant_id,kind,message,is_seed)
+                values (%s,%s,'needs_review',%s,%s)""",
+                (community["id"], aid, f"{applicant['name']} needs a lead review.", is_seed),
             )
         if recommendation["route_rule"] == "blocklist_confirmed":
             conn.execute(
-                "insert into notifications(community_id,applicant_id,kind,message) values (%s,%s,'blocklist_hit',%s)",
-                (community["id"], aid, f"{applicant['name']} matched a confirmed blocklist report."),
+                """insert into notifications(community_id,applicant_id,kind,message,is_seed)
+                values (%s,%s,'blocklist_hit',%s,%s)""",
+                (community["id"], aid, f"{applicant['name']} matched a confirmed blocklist report.", is_seed),
             )
         return applicant_detail(conn, str(aid))
 

@@ -150,6 +150,7 @@ Setup: run `python -m app.seed`, then open http://localhost:5173 (lead view for 
 - **Auth** is a community selector ("lead login") with no passwords, per the brief's cuts. Leads act as their community, and RLS is enforced through `SET ROLE gatekeeper_community` plus `app.community_id`.
 - **No sentence-transformers/torch**: too heavy for the time box. Rule heuristics use token overlap; the selected LLM provider does the semantic work when available.
 - **Plain SQL with psycopg** instead of an ORM, so the same migrations run unchanged on Supabase.
+- Reset demo deletes only `is_seed` rows; applications that use the simulated `demo-` evidence handles are stored as seed data, so the demo can be repeated; real applications are never touched.
 
 ## Known limitations
 

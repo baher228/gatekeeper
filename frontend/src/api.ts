@@ -89,6 +89,7 @@ const q = (o: Record<string, string | undefined>) => {
 
 export const api = {
   health: () => req<Health>('GET', '/health'),
+  resetDemo: () => req<{ ok: boolean; applicants: number; queue: number }>('POST', '/demo/reset'),
   communities: () => req<CommunityRef[]>('GET', '/communities'),
   community: (slug: string) => req<Community>('GET', `/communities/${slug}`),
   saveSettings: (slug: string, body: { rules: Rule[]; categories: Omit<CategoryQuota, 'used' | 'remaining' | 'waitlisted'>[]; reconsider_cooldown_days: number }) =>
