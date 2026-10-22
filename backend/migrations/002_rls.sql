@@ -5,7 +5,7 @@ do $$ begin
     create role gatekeeper_community nologin;
   end if;
 end $$;
-grant usage on schema public to gatekeeper_community;
+grant usage on schema gatekeeper to gatekeeper_community;
 grant select, insert, update on blocklist_entries to gatekeeper_community;
 grant select, insert on appeals to gatekeeper_community;
 grant select on communities to gatekeeper_community;

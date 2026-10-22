@@ -14,6 +14,23 @@ def test_phone_hash_normalization_matches_gb_formats():
     assert len(hashes) == 1
 
 
+def test_schema_search_path_survives_community_role_switch():
+    with connect() as conn:
+        community_id = conn.execute(
+            "select id from communities where slug='grok-night-london'"
+        ).fetchone()["id"]
+
+    for autocommit in (False, True):
+        conn = connect(autocommit=autocommit)
+        try:
+            assert conn.execute("select current_schema() as name").fetchone()["name"] == "gatekeeper"
+            with as_community(conn, community_id):
+                assert conn.execute("select current_schema() as name").fetchone()["name"] == "gatekeeper"
+            assert conn.execute("select current_schema() as name").fetchone()["name"] == "gatekeeper"
+        finally:
+            conn.close()
+
+
 def test_rls_scopes_pending_reports_and_blocks_cross_community_writes():
     with connect() as conn:
         communities = {

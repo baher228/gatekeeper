@@ -45,7 +45,7 @@ The REST contract (every route and JSON shape) is in [`docs/API.md`](docs/API.md
 Prerequisites: Python 3.11+, Node 20+, Docker (for local Postgres).
 
 ```bash
-# 1. Database (local Postgres 16, or set DATABASE_URL to a Supabase pooled connection string)
+# 1. Database (local Postgres 16 by default; Supabase uses the gatekeeper schema)
 docker run -d --name gk-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=gatekeeper -p 5432:5432 postgres:16
 
 # 2. Backend → http://localhost:8000 (migrates, seeds if empty, starts uvicorn)
@@ -53,6 +53,7 @@ cd backend
 python3.11 -m venv .venv && .venv/bin/pip install -r requirements.txt
 cp .env.example .env            # optional: add XAI_API_KEY, GITHUB_TOKEN
 source .venv/bin/activate && ./run.sh
+# To use backend/.env.supabase instead: ENV_FILE=.env.supabase ./run.sh
 
 # 3. Frontend → http://localhost:5173 (proxies /api to :8000)
 cd frontend && npm install && npm run dev
@@ -72,7 +73,11 @@ cd frontend && npm run build && npm run lint
 
 | Name | Required | Purpose |
 |---|---|---|
-| `DATABASE_URL` | yes | Postgres connection string (local default in `.env.example`, or Supabase pooled URL) |
+| `DATABASE_URL` | no | Postgres connection string; defaults to local Postgres, or load a Supabase pooled URL with `ENV_FILE=.env.supabase ./run.sh` |
+| `DB_SCHEMA` | no | Schema used by the backend; defaults to the isolated `gatekeeper` schema |
+| `SUPABASE_URL` | no | Supabase project URL (used by Supabase integrations) |
+| `SUPABASE_ANON_KEY` | no | Supabase anonymous key |
+| `SUPABASE_SERVICE_ROLE_KEY` | no | Supabase service-role key; keep private |
 | `XAI_API_KEY` | no | Enables Grok rule scoring. Without it the UI shows "LLM unavailable – rule-only reasoning" |
 | `GROK_MODEL` | no | Grok model id; otherwise picked from `/v1/models` |
 | `GITHUB_TOKEN` | no | Raises the GitHub REST rate limit |

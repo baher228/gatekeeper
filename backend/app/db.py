@@ -7,18 +7,35 @@ from typing import Iterator
 from uuid import UUID
 
 import psycopg
+from psycopg import sql
 from dotenv import load_dotenv
 from psycopg.rows import dict_row
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
-load_dotenv(BACKEND_DIR / ".env")
+ENV_FILE = Path(os.getenv("ENV_FILE", ".env"))
+if not ENV_FILE.is_absolute():
+    ENV_FILE = BACKEND_DIR / ENV_FILE
+load_dotenv(ENV_FILE)
 DATABASE_URL = os.getenv(
     "DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/gatekeeper"
 )
+DB_SCHEMA = os.getenv("DB_SCHEMA", "gatekeeper")
+if DB_SCHEMA != "gatekeeper":
+    raise ValueError("This backend is restricted to the gatekeeper schema")
 
 
 def connect(*, autocommit: bool = False) -> psycopg.Connection:
-    return psycopg.connect(DATABASE_URL, row_factory=dict_row, autocommit=autocommit)
+    conn = psycopg.connect(DATABASE_URL, row_factory=dict_row, autocommit=autocommit)
+    try:
+        conn.execute(
+            sql.SQL("set search_path to {}").format(sql.Identifier(DB_SCHEMA))
+        )
+        if not autocommit:
+            conn.commit()
+    except Exception:
+        conn.close()
+        raise
+    return conn
 
 
 @contextmanager
@@ -26,6 +43,9 @@ def as_community(conn: psycopg.Connection, community_id: str | UUID) -> Iterator
     """Run blocklist operations with the database-enforced community role and scope."""
     with conn.transaction():
         conn.execute("set local role gatekeeper_community")
+        conn.execute(
+            sql.SQL("set local search_path to {}").format(sql.Identifier(DB_SCHEMA))
+        )
         conn.execute(
             "select set_config('app.community_id', %s, true)", (str(community_id),)
         )
@@ -36,6 +56,11 @@ def as_community(conn: psycopg.Connection, community_id: str | UUID) -> Iterator
 
 def migrate() -> None:
     with connect() as conn:
+        conn.execute(
+            sql.SQL("create schema if not exists {}").format(
+                sql.Identifier(DB_SCHEMA)
+            )
+        )
         conn.execute(
             "create table if not exists schema_migrations "
             "(name text primary key, applied_at timestamptz not null default now())"

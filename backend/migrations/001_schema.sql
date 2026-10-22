@@ -1,4 +1,4 @@
-create extension if not exists pgcrypto;
+create schema if not exists gatekeeper; set search_path to gatekeeper;
 
 create table if not exists communities (
   id uuid primary key default gen_random_uuid(),
