@@ -10,6 +10,10 @@ def route(
     quota: dict,
     blocklist_matches: list[dict] | None = None,
     cooldown_days: int = 60,
+    adjustment: float = 0.0,
+    adjustment_reason: str | None = None,
+    community_ban: str | None = None,
+    disruptive_by: str | None = None,
 ) -> dict:
     """Apply ordered safety, completeness, score, and category-capacity decisions."""
     matches = blocklist_matches or []
@@ -19,6 +23,7 @@ def route(
     p_accept = history.get("p_accept")
     model_available = bool(history.get("available") and p_accept is not None)
     final_score = float(rule_score) if not model_available else 0.5 * float(rule_score) + 0.5 * float(p_accept)
+    final_score = min(1.0, max(0.0, final_score + float(adjustment)))
     route_rule = "low_confidence"
     verdict = "ask"
     reason_category = None
@@ -27,7 +32,10 @@ def route(
 
     confirmed = [m for m in matches if m.get("status") == "confirmed"]
     unconfirmed = [m for m in matches if m.get("status") in ("pending", "appealed")]
-    if confirmed:
+    if community_ban:
+        reasons.append(f"On {community_ban}'s event blacklist")
+        verdict, route_rule, reason_category, confidence = "decline", "event_blacklist", "rules_mismatch", 0.95
+    elif confirmed:
         hit = confirmed[0]
         reporter = hit.get("reporting_community") or "another community"
         kind = hit.get("identifier_type", "identifier")
@@ -76,6 +84,12 @@ def route(
             abs(final_score - 0.5) * 2
             + 0.2 * int(model_available and ((rule_score >= 0.5) == (p_accept >= 0.5))),
         )
+
+    if disruptive_by and verdict == "accept":
+        verdict, route_rule = "ask", "flagged_disruptive"
+        reasons.append(f"Flagged disruptive by {disruptive_by}")
+    if adjustment_reason:
+        reasons.append(adjustment_reason)
 
     quota_outcome = None
     waitlist_rank = None

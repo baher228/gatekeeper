@@ -8,6 +8,7 @@ from psycopg.types.json import Jsonb
 from app.db import as_community, connect
 from app.services.blocklist import identifier_hash
 from app.services.evidence import gather_evidence
+from app.services.extras import identity_extras, score_adjustment
 from app.services.history import feature_vector, predict
 from app.services.rules import calculate_rule_score, check_rules
 from app.services.router import route
@@ -84,6 +85,8 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
         if not category:
             raise ValueError("Unknown category for this community")
         matches = _lookup_blocklist(conn, community["id"], applicant)
+        extras = identity_extras(conn, community["id"], applicant)
+        adjustment, adjustment_reason = score_adjustment(extras["attendance"])
         used = conn.execute(
             "select count(*) as n from applicants where community_id=%s and category=%s and status='accepted'",
             (community["id"], category["slug"]),
@@ -110,9 +113,20 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
         result = route(
             applicant, checks, rule_score, evidence, history, quota, matches,
             community["reconsider_cooldown_days"],
+            adjustment=adjustment,
+            adjustment_reason=adjustment_reason,
+            community_ban=community["name"] if extras["ban"] else None,
+            disruptive_by=next(
+                (
+                    flag["community_name"] for flag in extras["shared_flags"]
+                    if flag["flag"] == "disruptive"
+                ),
+                None,
+            ),
         )
         recommendation = result["recommendation"]
         recommendation["llm"] = llm
+        recommendation["attendance"] = extras["attendance"]
         recommendation["evidence"]["blocklist"] = {"hit": bool(matches), "matches": matches}
         now = datetime.now(timezone.utc)
         if result["status"] == "waitlisted":
@@ -178,6 +192,7 @@ def applicant_detail(conn, applicant_id: str) -> dict | None:
     ).fetchone()
     if not row:
         return None
+    extras = identity_extras(conn, row["community_id"], row)
     decisions = conn.execute(
         "select verdict,reason_category,note,source,created_at from decisions where applicant_id=%s order by created_at",
         (applicant_id,),
@@ -215,6 +230,7 @@ def applicant_detail(conn, applicant_id: str) -> dict | None:
         "decided_at": row["decided_at"],
         "decline_reason": decline_reason,
         "recommendation": rec,
+        "extras": extras,
         "reconsideration": {
             "eligible": eligible,
             "reconsider_after": reconsider_after,

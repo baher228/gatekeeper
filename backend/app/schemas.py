@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 Status = Literal["accepted", "ask", "declined", "waitlisted"]
 ReasonCategory = Literal["skill_gap", "minor_issue", "capacity", "scam_abuse", "rules_mismatch"]
@@ -60,6 +60,7 @@ class ApplicantDetail(ApplicantSummary):
     decided_at: datetime | None = None
     decline_reason: ReasonCategory | None = None
     recommendation: dict
+    extras: dict = Field(default_factory=dict)
     reconsideration: dict
     decisions: list[dict] = Field(default_factory=list)
 
@@ -84,6 +85,29 @@ class BlocklistIn(BaseModel):
     identifier: str
     evidence: str
     links: list[str] = Field(default_factory=list)
+
+
+class CommunityBanIn(BaseModel):
+    identifier_type: Literal["email", "phone", "github", "handle"]
+    identifier: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+
+
+class BanApplicantIn(BaseModel):
+    reason: str = Field(min_length=1)
+
+
+class AttendeeNoteIn(BaseModel):
+    flag: Literal["great_volunteer", "no_show", "disruptive", "watch", "vip"] | None = None
+    note: str = Field(default="", max_length=500)
+    visibility: Literal["private", "shared"]
+    author: str = "lead"
+
+    @model_validator(mode="after")
+    def require_flag_or_note(self):
+        if self.flag is None and not self.note.strip():
+            raise ValueError("At least one of flag or note is required")
+        return self
 
 
 class AppealIn(BaseModel):

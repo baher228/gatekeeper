@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import connect
-from app.routes import applicants, communities, demo, misc
+from app.routes import applicants, communities, demo, extras, misc
 
 scheduler = BackgroundScheduler()
 
@@ -52,4 +52,5 @@ app.add_middleware(
 app.include_router(communities.router)
 app.include_router(applicants.router)
 app.include_router(demo.router)
+app.include_router(extras.router)
 app.include_router(misc.router)

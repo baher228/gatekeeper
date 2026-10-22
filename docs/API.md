@@ -18,6 +18,9 @@ Base: `http://localhost:8000/api`. All bodies JSON, all shapes are Pydantic v2 m
 - `GET /applicants/{id}` → `ApplicantDetail`
 - `POST /applicants/{id}/decision` body `{verdict: "accept"|"ask_more"|"decline", reason_category?: ReasonCategory, note?}` → `{applicant: ApplicantDetail, model: ModelInfo}` (decline requires reason_category; retrains the history model synchronously)
 - `POST /applicants/{id}/recheck` → `ApplicantDetail` (400 with `detail` if not reconsiderable / cool-down not over)
+- `POST /applicants/{id}/ban` body `{reason}` → `{ok: true, count: int}` (adds each identity to this community's private event blacklist)
+- `POST /applicants/{id}/notes` body `{flag?, note?, visibility: "private"|"shared", author?}` → note (at least a flag or note required)
+- `DELETE /applicants/{id}/notes/{note_id}` → `{ok: true}` (own community only)
 - `POST /communities/{slug}/recheck-due` → `{checked: int, changed: [ApplicantSummary]}` (same job APScheduler runs daily)
 - `POST /demo/reset` → `{ok: true, applicants: int, queue: int}` (restores seed data; disabled with `DEMO_RESET=0`)
 
@@ -68,6 +71,12 @@ ApplicantDetail = ApplicantSummary + {
 - `POST /communities/{slug}/appeals/{id}/resolve` body `{outcome: "upheld"|"rejected"}` → `BlockEntry` (upheld → entry removed; rejected → back to confirmed)
 
 `BlockEntry = {id, identifier_type, identifier_hash_prefix, evidence, links, reporting_community: {slug, name}, is_own: bool, status: "pending"|"confirmed"|"appealed"|"removed", created_at, appeals: [{id, contact, message, status: "open"|"upheld"|"rejected", created_at}]}`
+
+## Private event blacklist and attendee history
+- `GET /communities/{slug}/bans` → `[{id, identifier_type, label, reason, created_by, created_at}]`
+- `POST /communities/{slug}/bans` body `{identifier_type: "email"|"phone"|"github"|"handle", identifier, reason}` → `{ok: true}`
+- `DELETE /communities/{slug}/bans/{ban_id}` → `{ok: true}`
+- Applicant details and queue items include `extras` with this community's attendance and private ban, own notes, and shared notes/flags from other communities. Attendance adjusts routing by +0.05 for any attendance and up to -0.15 for no-shows; event bans decline and shared disruptive flags send would-be accepts to review.
 
 ## Evaluation
 - `GET /eval` → latest report (written by `python -m app.eval` to `backend/data/eval_report.json`) or 404

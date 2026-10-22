@@ -12,4 +12,5 @@ PYTHON="$PWD/.venv/bin/python"
 UVICORN="$PWD/.venv/bin/uvicorn"
 "$PYTHON" -m app.db migrate
 "$PYTHON" -m app.seed --if-empty
+"$PYTHON" -m app.demo_extras
 exec "$UVICORN" app.main:app --host 0.0.0.0 --port 8000

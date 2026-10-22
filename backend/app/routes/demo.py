@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException
 from starlette.concurrency import run_in_threadpool
 
 from app.db import connect
+from app.demo_extras import seed_demo_extras
 from app.seed import seed
 
 router = APIRouter(prefix="/api")
@@ -17,6 +18,7 @@ async def reset_demo():
         raise HTTPException(403, "Demo reset is disabled")
 
     await run_in_threadpool(seed, if_empty=False)
+    await run_in_threadpool(seed_demo_extras)
     with connect() as conn:
         applicants = conn.execute(
             "select count(*) as n from applicants where is_seed=true"
