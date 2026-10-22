@@ -18,7 +18,14 @@ Base: `http://localhost:8000/api`. All bodies JSON, all shapes are Pydantic v2 m
 - `GET /applicants/{id}` → `ApplicantDetail`
 - `POST /applicants/{id}/decision` body `{verdict: "accept"|"ask_more"|"decline", reason_category?: ReasonCategory, note?}` → `{applicant: ApplicantDetail, model: ModelInfo}` (decline requires reason_category; retrains the history model synchronously)
 - `POST /applicants/{id}/recheck` → `ApplicantDetail` (400 with `detail` if not reconsiderable / cool-down not over)
+- `POST /applicants/{id}/question` body `{question}` → `{ok: true, lead_question}`
+- `POST /applicants/{id}/ban` body `{reason}` → `{ok: true, count: int}` (adds each identity to this community's private event blacklist)
+- `POST /applicants/{id}/notes` body `{flag?, note?, visibility: "private"|"shared", author?}` → note (at least a flag or note required)
+- `DELETE /applicants/{id}/notes/{note_id}` → `{ok: true}` (own community only)
 - `POST /communities/{slug}/recheck-due` → `{checked: int, changed: [ApplicantSummary]}` (same job APScheduler runs daily)
+- `POST /demo/reset` → `{ok: true, applicants: int, queue: int}` (restores seed data; disabled with `DEMO_RESET=0`)
+- `GET /status/{token}` → public application status and response links (only applicant-facing fields)
+- `POST /status/{token}/reply` body `{text}` → updated public application status
 
 `ReasonCategory = "skill_gap"|"minor_issue"|"capacity"|"scam_abuse"|"rules_mismatch"`
 `Status = "accepted"|"ask"|"declined"|"waitlisted"`
@@ -34,7 +41,7 @@ ApplicantDetail = ApplicantSummary + {
     reasons: [string],                      # human readable, most important first
     route_rule: string,                     # which router rule fired, e.g. "blocklist_confirmed", "disagreement", "score_accept"
     disagreement: bool,
-    llm: {status: "live"|"unavailable", model: string|null, error: string|null},
+    llm: {status: "live"|"cached"|"unavailable", provider: string|null, model: string|null, error: string|null},
     rule_score: float,
     rule_checks: [{rule_id, rule, score: float, verdict: "pass"|"unclear"|"fail", reason, quote: string|null, source: "llm"|"heuristic"}],
     history: {available: bool, p_accept: float|null, n_training: int, top_features: [{feature, value, contribution}]},
@@ -68,16 +75,26 @@ ApplicantDetail = ApplicantSummary + {
 
 `BlockEntry = {id, identifier_type, identifier_hash_prefix, evidence, links, reporting_community: {slug, name}, is_own: bool, status: "pending"|"confirmed"|"appealed"|"removed", created_at, appeals: [{id, contact, message, status: "open"|"upheld"|"rejected", created_at}]}`
 
+## Private event blacklist and attendee history
+- `GET /communities/{slug}/bans` → `[{id, identifier_type, label, reason, created_by, created_at}]`
+- `POST /communities/{slug}/bans` body `{identifier_type: "email"|"phone"|"github"|"handle", identifier, reason}` → `{ok: true}`
+- `DELETE /communities/{slug}/bans/{ban_id}` → `{ok: true}`
+- Applicant details and queue items include `extras` with this community's attendance and private ban, own notes, and shared notes/flags from other communities. Attendance adjusts routing by +0.05 for any attendance and up to -0.15 for no-shows; event bans decline and shared disruptive flags send would-be accepts to review.
+
 ## Evaluation
 - `GET /eval` → latest report (written by `python -m app.eval` to `backend/data/eval_report.json`) or 404
 - `POST /eval/run` → runs it and returns the report
 ```
 EvalReport = {generated_at, test_set: {n, n_accept, n_decline, n_scam, n_edge, source}, train_set: {n, source},
   variants: [{name: "rules_only"|"rules_plus_history", accuracy, accept_precision, accept_recall, decline_precision, decline_recall,
-              false_block_rate, ask_rate, accuracy_on_decided, confusion: {...}, n}],
-  notes: [string], edge_cases: [{name, label, rules_only, rules_plus_history}]}
+              false_block_rate, ask_rate, accuracy_on_decided, confusion: {...}, confusion_matrix: {accept|decline: {accept, ask, decline}},
+              by_kind: {kind: {n, accuracy, ask_rate}}, n}],
+  notes: [string], edge_cases: [{kind, labels, rules_only_accuracy, rules_plus_history_accuracy}]}
 ```
 
 ## Misc
-- `GET /health` → `{ok, db, llm: {available, model}, github_token: bool}`
+- `GET /health` → `{ok, db, llm: {available, provider, model, label, verified, error, calls_made, max_calls}, github_token: bool}`
+- `llm.verified` is false until a completion call has succeeded or failed since startup; `llm.available` is true only when the provider is configured and the latest completion succeeded.
+- Cursor CLI is selected by default when `CURSOR_API_KEY` is set; otherwise Gemini is the default. `LLM_PROVIDER` can select a provider explicitly. Cursor uses `LLM_MODEL` (default `gemini-3.7-flash-high`); `cursor-grok-4.5-high-fast` is an available Grok 4.5 option, and `CURSOR_MODEL` remains a fallback. Provider attempts, including retries, share a process-wide cap of 40 by default (`LLM_MAX_CALLS`).
+- Only live form submissions call an LLM. Re-checks reuse stored live rule checks with `status: "cached"` and the original provider; otherwise they use heuristic checks. Evaluation uses heuristic checks and makes zero LLM calls.
 - Stretch: `POST /messages/check` body `{text}` → `{scam_probability, label, top_terms: [{term, weight}], draft_removal}`
