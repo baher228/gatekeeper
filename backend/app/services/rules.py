@@ -73,7 +73,19 @@ def heuristic_checks(rules: list[dict], applicant: dict, evidence: dict) -> list
     return results
 
 
-async def check_rules(rules: list[dict], applicant: dict, evidence: dict) -> tuple[list[dict], dict]:
+async def check_rules(
+    rules: list[dict],
+    applicant: dict,
+    evidence: dict,
+    allow_llm: bool = True,
+) -> tuple[list[dict], dict]:
+    if not allow_llm:
+        return heuristic_checks(rules, applicant, evidence), {
+            "status": "unavailable",
+            "provider": None,
+            "model": None,
+            "error": "LLM checks are only run on live submissions",
+        }
     settings = llm.config()
     provider = settings["provider"]
     model = settings["model"]

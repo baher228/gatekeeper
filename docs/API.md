@@ -35,7 +35,7 @@ ApplicantDetail = ApplicantSummary + {
     reasons: [string],                      # human readable, most important first
     route_rule: string,                     # which router rule fired, e.g. "blocklist_confirmed", "disagreement", "score_accept"
     disagreement: bool,
-    llm: {status: "live"|"unavailable", provider: string|null, model: string|null, error: string|null},
+    llm: {status: "live"|"cached"|"unavailable", provider: string|null, model: string|null, error: string|null},
     rule_score: float,
     rule_checks: [{rule_id, rule, score: float, verdict: "pass"|"unclear"|"fail", reason, quote: string|null, source: "llm"|"heuristic"}],
     history: {available: bool, p_accept: float|null, n_training: int, top_features: [{feature, value, contribution}]},
@@ -81,6 +81,8 @@ EvalReport = {generated_at, test_set: {n, n_accept, n_decline, n_scam, n_edge, s
 ```
 
 ## Misc
-- `GET /health` → `{ok, db, llm: {available, provider, model, verified, error}, github_token: bool}`
+- `GET /health` → `{ok, db, llm: {available, provider, model, label, verified, error, calls_made, max_calls}, github_token: bool}`
 - `llm.verified` is false until a completion call has succeeded or failed since startup; `llm.available` is true only when the provider is configured and the latest completion succeeded.
+- Cursor CLI is selected by default when `CURSOR_API_KEY` is set; otherwise Gemini is the default. `LLM_PROVIDER` can select a provider explicitly. Cursor uses `LLM_MODEL` (default `gemini-3.7-flash-high`); `cursor-grok-4.5-high-fast` is an available Grok 4.5 option, and `CURSOR_MODEL` remains a fallback. Provider attempts, including retries, share a process-wide cap of 40 by default (`LLM_MAX_CALLS`).
+- Only live form submissions call an LLM. Re-checks reuse stored live rule checks with `status: "cached"` and the original provider; otherwise they use heuristic checks. Evaluation uses heuristic checks and makes zero LLM calls.
 - Stretch: `POST /messages/check` body `{text}` → `{scam_probability, label, top_terms: [{term, weight}], draft_removal}`

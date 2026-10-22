@@ -10,6 +10,10 @@ from app.services import llm
 from app.services.message_classifier import check_message
 
 router = APIRouter(prefix="/api")
+CURSOR_MODEL_LABELS = {
+    "gemini-3.7-flash-high": "Gemini 3.7 Flash",
+    "cursor-grok-4.5-high-fast": "Grok 4.5",
+}
 
 
 def _block_entry(conn, entry_id: str, community_id: str) -> dict | None:
@@ -208,14 +212,22 @@ def health():
             llm_error = llm.configuration_error(settings)
         elif llm.last_ok is None:
             llm_error = "not yet verified – no LLM call made since startup"
+    label = (
+        f"{CURSOR_MODEL_LABELS.get(settings['model'], settings['model'])} via Cursor"
+        if settings["provider"] == "cursor"
+        else f"{settings['provider']} · {settings['model']}"
+    )
     return {
         "ok": db_ok, "db": "connected" if db_ok else "unavailable",
         "llm": {
             "available": bool(settings["configured"] and llm.last_ok is True),
             "provider": settings["provider"],
             "model": settings["model"],
+            "label": label,
             "verified": llm.last_ok is not None,
             "error": llm_error,
+            "calls_made": llm.calls_made,
+            "max_calls": llm.MAX_CALLS,
         },
         "github_token": bool(os.getenv("GITHUB_TOKEN")),
     }

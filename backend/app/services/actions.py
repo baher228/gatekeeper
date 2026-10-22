@@ -13,6 +13,24 @@ from app.services.rules import calculate_rule_score, check_rules
 from app.services.router import route
 
 
+async def _recheck_rule_checks(
+    rules: list[dict],
+    applicant: dict,
+    evidence: dict,
+    stored_recommendation: dict,
+) -> tuple[list[dict], dict]:
+    stored_llm = stored_recommendation.get("llm") or {}
+    stored_checks = stored_recommendation.get("rule_checks") or []
+    if stored_llm.get("status") in ("live", "cached") and stored_checks:
+        return stored_checks, {
+            "status": "cached",
+            "provider": stored_llm.get("provider"),
+            "model": stored_llm.get("model"),
+            "error": None,
+        }
+    return await check_rules(rules, applicant, evidence, allow_llm=False)
+
+
 def lead_decision(applicant_id: str, decision: DecisionIn) -> dict | None:
     if decision.verdict == "decline" and not decision.reason_category:
         raise ValueError("reason_category is required when declining")
@@ -125,7 +143,9 @@ async def recheck_applicant(applicant_id: str) -> dict | None:
         cats = category_quotas(conn, row["community_id"])
         category = next((cat for cat in cats if cat["slug"] == row["category"]), None)
         matches = old_evidence.get("blocklist", {}).get("matches", [])
-        checks, llm = await check_rules(row["rules"], applicant, evidence)
+        checks, llm = await _recheck_rule_checks(
+            row["rules"], applicant, evidence, old_rec
+        )
         rule_score = calculate_rule_score(checks, evidence, row["category"])
         feature_categories = [cat["slug"] for cat in cats]
         vector = feature_vector(applicant, {"rule_score": rule_score, "rule_checks": checks}, evidence, feature_categories)

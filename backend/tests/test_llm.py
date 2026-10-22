@@ -1,5 +1,7 @@
 import asyncio
 import json
+import os
+from pathlib import Path
 from types import SimpleNamespace
 
 import openai
@@ -15,8 +17,17 @@ APPLICANT = {"name": "Taylor", "what_build": "I built a library tool for local r
 EVIDENCE = {"github": {}, "devpost": {}}
 
 
+@pytest.fixture(autouse=True)
+def reset_llm_state(monkeypatch):
+    monkeypatch.setattr(llm, "calls_made", 0)
+    monkeypatch.setattr(llm, "last_error", None)
+    monkeypatch.setattr(llm, "last_ok", None)
+    monkeypatch.setattr(llm, "MAX_CALLS", 40)
+
+
 def test_config_defaults_to_gemini(monkeypatch):
     monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("CURSOR_API_KEY", raising=False)
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("GEMINI_MODEL", raising=False)
 
@@ -27,6 +38,32 @@ def test_config_defaults_to_gemini(monkeypatch):
         "model": "gemini-3.8-flash",
         "configured": False,
     }
+
+
+def test_config_defaults_to_cursor_when_key_is_set(monkeypatch):
+    monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    monkeypatch.setenv("CURSOR_API_KEY", "test-key")
+    monkeypatch.delenv("LLM_MODEL", raising=False)
+    monkeypatch.delenv("CURSOR_MODEL", raising=False)
+
+    settings = llm.config()
+
+    assert settings == {
+        "provider": "cursor",
+        "model": "gemini-3.7-flash-high",
+        "configured": True,
+    }
+
+
+def test_cursor_model_override_precedes_cursor_model_fallback(monkeypatch):
+    monkeypatch.setenv("LLM_PROVIDER", "cursor")
+    monkeypatch.setenv("CURSOR_API_KEY", "test-key")
+    monkeypatch.setenv("LLM_MODEL", "gemini-3.7-flash-high")
+    monkeypatch.setenv("CURSOR_MODEL", "cursor-grok-4.5-high-fast")
+
+    assert llm.config()["model"] == "gemini-3.7-flash-high"
+    monkeypatch.delenv("LLM_MODEL")
+    assert llm.config()["model"] == "cursor-grok-4.5-high-fast"
 
 
 def test_config_uses_configured_grok_model(monkeypatch):
@@ -124,8 +161,6 @@ def test_check_rules_accepts_valid_json_with_verbatim_quote(monkeypatch):
 def test_health_reports_llm_verification_state(monkeypatch):
     monkeypatch.setenv("LLM_PROVIDER", "gemini")
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
-    monkeypatch.setattr(llm, "last_ok", None)
-    monkeypatch.setattr(llm, "last_error", None)
 
     class Connection:
         def __enter__(self):
@@ -143,6 +178,9 @@ def test_health_reports_llm_verification_state(monkeypatch):
     assert before["available"] is False
     assert before["verified"] is False
     assert before["error"] == "not yet verified – no LLM call made since startup"
+    assert before["label"] == "gemini · gemini-3.8-flash"
+    assert before["calls_made"] == 0
+    assert before["max_calls"] == 40
 
     class SuccessfulClient:
         def __init__(self, **_kwargs):
@@ -181,3 +219,286 @@ def test_health_reports_llm_verification_state(monkeypatch):
     assert after_failure["available"] is False
     assert after_failure["verified"] is True
     assert after_failure["error"] == "simulated provider failure"
+
+
+def test_cursor_health_label_uses_friendly_model_name(monkeypatch):
+    monkeypatch.setenv("LLM_PROVIDER", "cursor")
+    monkeypatch.setenv("CURSOR_API_KEY", "test-key")
+    monkeypatch.setenv("LLM_MODEL", "gemini-3.7-flash-high")
+
+    class Connection:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def execute(self, _query):
+            return None
+
+    monkeypatch.setattr(misc, "connect", Connection)
+
+    assert misc.health()["llm"]["label"] == "Gemini 3.7 Flash via Cursor"
+    monkeypatch.setenv("LLM_MODEL", "cursor-grok-4.5-high-fast")
+    assert misc.health()["llm"]["label"] == "Grok 4.5 via Cursor"
+
+
+def _cursor_process(monkeypatch, envelope, calls=None, on_call=None):
+    class Process:
+        returncode = 0
+
+        async def communicate(self):
+            return json.dumps(envelope).encode(), b""
+
+        def kill(self):
+            self.returncode = -9
+
+    async def create_subprocess_exec(*args, **kwargs):
+        if calls is not None:
+            calls.append((args, kwargs))
+        if on_call is not None:
+            on_call(args, kwargs)
+        return Process()
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", create_subprocess_exec)
+
+
+def _configure_cursor(monkeypatch):
+    monkeypatch.setenv("LLM_PROVIDER", "cursor")
+    monkeypatch.setenv("CURSOR_API_KEY", "test-cursor-key")
+    monkeypatch.setenv("LLM_MODEL", "")
+    monkeypatch.setenv("CURSOR_MODEL", "cursor-grok-4.5-high-fast")
+    monkeypatch.delenv("CURSOR_AGENT_BIN", raising=False)
+
+
+def test_cursor_extracts_result_json_and_uses_fresh_empty_workdir(monkeypatch):
+    _configure_cursor(monkeypatch)
+    calls = []
+    workdirs = []
+
+    def check_workdir(_args, kwargs):
+        cwd = Path(kwargs["cwd"])
+        assert cwd.exists()
+        assert cwd.resolve() != Path(__file__).resolve().parents[2]
+        assert list(cwd.iterdir()) == []
+        workdirs.append(cwd)
+
+    _cursor_process(
+        monkeypatch,
+        {
+            "is_error": False,
+            "result": 'Here is the result: {"checks":[{"reason":"brace } in a string"}]} done.',
+        },
+        calls,
+        check_workdir,
+    )
+
+    result = asyncio.run(llm.complete_json([
+        {"role": "system", "content": "System instructions"},
+        {"role": "user", "content": "Applicant details"},
+    ]))
+
+    parsed = json.loads(result)
+    assert parsed["checks"][0]["reason"] == "brace } in a string"
+    assert len(calls) == 1
+    args, kwargs = calls[0]
+    assert not workdirs[0].exists()
+    assert args[0] == "~/.local/bin/cursor-agent" or args[0].endswith("/.local/bin/cursor-agent")
+    assert args[1:7] == ("-p", "--trust", "--model", "cursor-grok-4.5-high-fast", "--output-format", "json")
+    assert "--mode" not in args
+    assert "System instructions" in args[-1]
+    assert "Applicant details" in args[-1]
+    assert args[-1].endswith("Respond with a single JSON object only, no prose, no code fences.")
+    assert kwargs["env"]["CURSOR_API_KEY"] == "test-cursor-key"
+
+
+def test_cursor_error_falls_back_with_unavailable_status(monkeypatch):
+    _configure_cursor(monkeypatch)
+    calls = []
+    _cursor_process(
+        monkeypatch,
+        {"is_error": True, "result": "Cursor reported failure"},
+        calls,
+    )
+
+    checks, status = asyncio.run(check_rules(RULES, APPLICANT, EVIDENCE))
+
+    assert checks and all(check["source"] == "heuristic" for check in checks)
+    assert status["status"] == "unavailable"
+    assert status["error"] == "Cursor reported failure"
+    assert len(calls) == 2
+
+
+def test_budget_cap_refuses_second_completion(monkeypatch):
+    _configure_cursor(monkeypatch)
+    monkeypatch.setenv("LLM_MAX_CALLS", "1")
+    monkeypatch.setattr(llm, "MAX_CALLS", int(os.getenv("LLM_MAX_CALLS")))
+    calls = []
+    _cursor_process(monkeypatch, {"is_error": False, "result": '{"checks": []}'}, calls)
+
+    assert asyncio.run(llm.complete_json([])) == '{"checks": []}'
+    with pytest.raises(RuntimeError, match="budget cap reached"):
+        asyncio.run(llm.complete_json([]))
+    assert len(calls) == 1
+    assert llm.calls_made == 1
+
+
+def test_cursor_failure_uses_at_most_two_attempts(monkeypatch):
+    _configure_cursor(monkeypatch)
+    calls = []
+    _cursor_process(monkeypatch, {"is_error": True, "result": "failure"}, calls)
+
+    with pytest.raises(RuntimeError, match="failure"):
+        asyncio.run(llm.complete_json([]))
+
+    assert len(calls) == 2
+    assert llm.calls_made == 2
+
+
+def test_recheck_reuses_live_checks_without_calling_llm(monkeypatch):
+    from app.services import actions
+
+    async def forbidden(_messages):
+        raise AssertionError("re-check must not invoke the LLM")
+
+    monkeypatch.setattr(llm, "complete_json", forbidden)
+    stored_checks = [{
+        "rule_id": "ship", "rule": "Ships a useful project", "score": 0.9,
+        "verdict": "pass", "reason": "Describes a concrete project",
+        "quote": "built a library tool", "source": "llm",
+    }]
+    checks, status = asyncio.run(actions._recheck_rule_checks(
+        RULES,
+        APPLICANT,
+        EVIDENCE,
+        {
+            "llm": {"status": "live", "provider": "cursor", "model": "cursor-grok-4.5-high-fast"},
+            "rule_checks": stored_checks,
+        },
+    ))
+
+    assert checks is stored_checks
+    assert status == {
+        "status": "cached",
+        "provider": "cursor",
+        "model": "cursor-grok-4.5-high-fast",
+        "error": None,
+    }
+
+
+def test_recheck_falls_back_to_heuristics_without_calling_llm(monkeypatch):
+    from app.services import actions
+
+    async def forbidden(_messages):
+        raise AssertionError("re-check must not invoke the LLM")
+
+    monkeypatch.setattr(llm, "complete_json", forbidden)
+    checks, status = asyncio.run(actions._recheck_rule_checks(
+        RULES, APPLICANT, EVIDENCE, {"llm": {"status": "unavailable"}}
+    ))
+
+    assert checks and all(check["source"] == "heuristic" for check in checks)
+    assert status["status"] == "unavailable"
+    assert "only run on live submissions" in status["error"]
+
+
+def test_recheck_applicant_reuses_live_checks_without_calling_llm(monkeypatch):
+    from datetime import datetime, timedelta, timezone
+    from uuid import uuid4
+
+    from psycopg.types.json import Jsonb
+
+    from app.db import connect
+    from app.services import actions
+
+    async def forbidden(_messages):
+        raise AssertionError("re-check must not invoke the LLM")
+
+    async def offline_evidence(_applicant, _fixture=None):
+        return {
+            "github": {"status": "not_provided", "public_repos": 0, "recent_push_days": None},
+            "devpost": {"status": "not_provided", "projects": 0, "wins": 0},
+            "stopforumspam": {
+                "status": "not_provided",
+                "email_appears": False,
+                "username_appears": False,
+                "confidence": 0,
+            },
+            "blocklist": {"hit": False, "matches": []},
+        }
+
+    monkeypatch.setattr(llm, "complete_json", forbidden)
+    monkeypatch.setattr(actions, "gather_evidence", offline_evidence)
+    applicant_id = str(uuid4())
+    now = datetime.now(timezone.utc)
+    stored_checks = [{
+        "rule_id": "ship",
+        "rule": "Ships a useful project",
+        "score": 0.9,
+        "verdict": "pass",
+        "reason": "Describes a concrete project",
+        "quote": "built a library tool",
+        "source": "llm",
+    }]
+    recommendation = {
+        "llm": {
+            "status": "live",
+            "provider": "cursor",
+            "model": "cursor-grok-4.5-high-fast",
+            "error": None,
+        },
+        "rule_checks": stored_checks,
+        "evidence": {"github": {}, "blocklist": {"matches": []}},
+    }
+
+    with connect() as conn:
+        community_id = conn.execute(
+            "select id from communities where slug='grok-night-london'"
+        ).fetchone()["id"]
+        conn.execute(
+            """insert into applicants(
+                id,community_id,name,email,what_build,category,status,decision_source,
+                final_score,confidence,decline_reason,decided_at,reconsider_after,
+                previous_decline,recommendation,created_at
+            ) values (%s,%s,'LLM Cache Recheck','llm-cache-recheck@example.com',
+                'A concrete project for local readers.','builder','declined','auto',0.2,0.8,
+                'skill_gap',%s,%s,%s,%s,%s)""",
+            (
+                applicant_id,
+                community_id,
+                now - timedelta(days=30),
+                now - timedelta(days=1),
+                Jsonb({"declined_at": (now - timedelta(days=30)).date().isoformat(),
+                       "reason_category": "skill_gap"}),
+                Jsonb(recommendation),
+                now - timedelta(days=30),
+            ),
+        )
+
+    try:
+        result = asyncio.run(actions.recheck_applicant(applicant_id))
+        assert result["recommendation"]["llm"]["status"] == "cached"
+        assert result["recommendation"]["llm"]["provider"] == "cursor"
+        assert result["recommendation"]["rule_checks"][0]["source"] == "llm"
+    finally:
+        with connect() as conn:
+            conn.execute("delete from notifications where applicant_id=%s", (applicant_id,))
+            conn.execute("delete from decisions where applicant_id=%s", (applicant_id,))
+            conn.execute("delete from applicants where id=%s", (applicant_id,))
+
+
+def test_eval_run_never_calls_llm(monkeypatch, tmp_path):
+    from app import eval as evaluation
+
+    def forbidden(_messages):
+        raise AssertionError("evaluation must not invoke the LLM")
+
+    monkeypatch.setattr(llm, "complete_json", forbidden)
+    monkeypatch.setattr(evaluation, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(evaluation, "TESTSET_PATH", tmp_path / "testset.json")
+    monkeypatch.setattr(evaluation, "REPORT_PATH", tmp_path / "eval_report.json")
+
+    report = evaluation.run()
+
+    assert report["test_set"]["n"] == 150
+    assert (tmp_path / "eval_report.json").exists()
