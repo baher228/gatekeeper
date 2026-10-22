@@ -18,11 +18,14 @@ Base: `http://localhost:8000/api`. All bodies JSON, all shapes are Pydantic v2 m
 - `GET /applicants/{id}` → `ApplicantDetail`
 - `POST /applicants/{id}/decision` body `{verdict: "accept"|"ask_more"|"decline", reason_category?: ReasonCategory, note?}` → `{applicant: ApplicantDetail, model: ModelInfo}` (decline requires reason_category; retrains the history model synchronously)
 - `POST /applicants/{id}/recheck` → `ApplicantDetail` (400 with `detail` if not reconsiderable / cool-down not over)
+- `POST /applicants/{id}/question` body `{question}` → `{ok: true, lead_question}`
 - `POST /applicants/{id}/ban` body `{reason}` → `{ok: true, count: int}` (adds each identity to this community's private event blacklist)
 - `POST /applicants/{id}/notes` body `{flag?, note?, visibility: "private"|"shared", author?}` → note (at least a flag or note required)
 - `DELETE /applicants/{id}/notes/{note_id}` → `{ok: true}` (own community only)
 - `POST /communities/{slug}/recheck-due` → `{checked: int, changed: [ApplicantSummary]}` (same job APScheduler runs daily)
 - `POST /demo/reset` → `{ok: true, applicants: int, queue: int}` (restores seed data; disabled with `DEMO_RESET=0`)
+- `GET /status/{token}` → public application status and response links (only applicant-facing fields)
+- `POST /status/{token}/reply` body `{text}` → updated public application status
 
 `ReasonCategory = "skill_gap"|"minor_issue"|"capacity"|"scam_abuse"|"rules_mismatch"`
 `Status = "accepted"|"ask"|"declined"|"waitlisted"`

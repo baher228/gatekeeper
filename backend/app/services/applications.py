@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import secrets
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
@@ -147,8 +148,8 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
             """insert into applicants
             (community_id,name,email,phone,github,devpost,chat_handle,what_build,category,status,
              decision_source,final_score,confidence,recommendation,features,decline_reason,decided_at,
-             reconsider_after,previous_decline,is_seed)
-            values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'auto',%s,%s,%s,%s,%s,%s,%s,%s,%s)
+             reconsider_after,previous_decline,is_seed,status_token)
+            values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'auto',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             returning id""",
             (
                 community["id"], applicant["name"], applicant["email"], applicant.get("phone"),
@@ -158,6 +159,7 @@ async def apply_application(slug: str, incoming: dict) -> dict | None:
                 Jsonb(features), reason, now, reconsider_after,
                 Jsonb(previous_decline) if previous_decline else None,
                 is_seed,
+                secrets.token_urlsafe(24),
             ),
         ).fetchone()["id"]
         conn.execute(
@@ -231,6 +233,10 @@ def applicant_detail(conn, applicant_id: str) -> dict | None:
         "decline_reason": decline_reason,
         "recommendation": rec,
         "extras": extras,
+        "status_token": row["status_token"],
+        "lead_question": row["lead_question"],
+        "applicant_reply": row["applicant_reply"],
+        "applicant_reply_at": row["applicant_reply_at"],
         "reconsideration": {
             "eligible": eligible,
             "reconsider_after": reconsider_after,

@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 Status = Literal["accepted", "ask", "declined", "waitlisted"]
 ReasonCategory = Literal["skill_gap", "minor_issue", "capacity", "scam_abuse", "rules_mismatch"]
@@ -61,6 +61,10 @@ class ApplicantDetail(ApplicantSummary):
     decline_reason: ReasonCategory | None = None
     recommendation: dict
     extras: dict = Field(default_factory=dict)
+    status_token: str
+    lead_question: str | None = None
+    applicant_reply: str | None = None
+    applicant_reply_at: datetime | None = None
     reconsideration: dict
     decisions: list[dict] = Field(default_factory=list)
 
@@ -108,6 +112,24 @@ class AttendeeNoteIn(BaseModel):
         if self.flag is None and not self.note.strip():
             raise ValueError("At least one of flag or note is required")
         return self
+
+
+class StatusReplyIn(BaseModel):
+    text: str = Field(min_length=1, max_length=1000)
+
+    @field_validator("text", mode="before")
+    @classmethod
+    def strip_text(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+
+class LeadQuestionIn(BaseModel):
+    question: str = Field(min_length=1, max_length=1000)
+
+    @field_validator("question", mode="before")
+    @classmethod
+    def strip_question(cls, value):
+        return value.strip() if isinstance(value, str) else value
 
 
 class AppealIn(BaseModel):
