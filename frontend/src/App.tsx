@@ -10,6 +10,7 @@ import EvalPage from './pages/Evaluation'
 import ApplyPage from './pages/Apply'
 import AppealPage from './pages/Appeal'
 import StatusPage from './pages/Status'
+import EventsPage from './pages/Events'
 import MessageCheckPage from './pages/MessageCheck'
 
 export const DEFAULT_SLUG = 'grok-night-london'
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="queue" element={<QueuePage />} />
         <Route path="applicants" element={<ApplicantsPage />} />
         <Route path="applicants/:id" element={<ApplicantPage />} />
+        <Route path="events" element={<EventsPage />} />
         <Route path="blocklist" element={<BlocklistPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="eval" element={<EvalPage />} />

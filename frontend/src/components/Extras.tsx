@@ -16,12 +16,50 @@ export function attendanceLine(a: ApplicantDetail) {
   return [at.attended ? `Attended ${at.attended} of your past events` : null, at.no_show ? `No-show at ${at.no_show} of your past events` : null].filter(Boolean).join(' · ')
 }
 
+export function LikeButton({ id, liked, onChange, small }: { id: string; liked: boolean; onChange: (v: boolean) => void; small?: boolean }) {
+  const [busy, setBusy] = useState(false)
+  const toggle = async (e: { preventDefault: () => void; stopPropagation: () => void }) => {
+    e.preventDefault(); e.stopPropagation()
+    if (busy) return
+    setBusy(true); onChange(!liked)
+    try { const r = liked ? await api.unlike(id) : await api.like(id); onChange(r.liked) } catch { onChange(liked) } finally { setBusy(false) }
+  }
+  return (
+    <button type="button" onClick={toggle} aria-pressed={liked} title={liked ? 'Liked · click to unlike' : 'Like this attendee'}
+      className={cx('inline-flex items-center gap-1.5 rounded-lg border transition-colors', small ? 'h-7 px-1.5' : 'h-9 px-3 text-sm', liked ? 'border-rose-400/40 bg-rose-400/10 text-rose-300' : 'border-line text-muted hover:text-fg')}>
+      <svg width={small ? 14 : 16} height={small ? 14 : 16} viewBox="0 0 24 24" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>
+      {!small && (liked ? 'Liked' : 'Like')}
+    </button>
+  )
+}
+
+export function AttendanceBanner({ a }: { a: ApplicantDetail }) {
+  const at = a.extras?.attendance
+  if (!at) return null
+  const none = !at.attended && !at.no_show
+  return (
+    <div className={cx('rounded-xl border p-4', none ? 'border-line bg-card' : at.no_show ? 'border-ask/30 bg-ask/[.05]' : 'border-accept/30 bg-accept/[.05]')}>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <div className="flex items-baseline gap-2"><span className={cx('text-3xl font-semibold tabular-nums', at.attended ? 'text-accept' : 'text-muted')}>{at.attended}</span><span className="text-sm text-muted">attended</span></div>
+        <div className="flex items-baseline gap-2"><span className={cx('text-3xl font-semibold tabular-nums', at.no_show ? 'text-ask' : 'text-muted')}>{at.no_show}</span><span className="text-sm text-muted">no-shows</span></div>
+        <div className="min-w-0 flex-1 text-sm">{none ? <span className="text-muted">First time at your events: no attendance on record.</span> : <span>{attendanceLine(a)}{at.attended ? ' · returning attendee, score +0.05' : ''}{at.no_show ? ` · score −${Math.min(0.15, 0.05 * at.no_show).toFixed(2)}` : ''}</span>}</div>
+      </div>
+      {at.events.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {at.events.map((ev, i) => <Tag key={i} tone={ev.status === 'attended' ? 'accept' : 'ask'}>{ev.event_name} · {fmtDate(ev.event_date)} · {ev.status === 'attended' ? 'attended' : 'no-show'}</Tag>)}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function ExtrasChips({ a }: { a: ApplicantDetail }) {
   const e = a.extras
   if (!e) return null
   const line = attendanceLine(a)
   return <>
     {e.ban && <Tag tone="decline">on your event blacklist</Tag>}
+    {e.liked && <Tag className="border-rose-400/40 text-rose-300">♥ liked</Tag>}
     {line && <Tag tone={e.attendance.no_show ? 'ask' : 'accept'}>{line}</Tag>}
     {e.shared_flags.map(f => <Tag key={f.flag + f.community_name} tone={FLAG_TONE[f.flag]} title={`Shared by ${f.community_name}`}>{FLAG_LABELS[f.flag]} · {f.community_name}</Tag>)}
   </>

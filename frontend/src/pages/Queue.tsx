@@ -4,7 +4,7 @@ import { api, REASON_LABELS } from '../api'
 import type { ApplicantDetail, ModelInfo, ReasonCategory } from '../api'
 import { useAsync } from '../hooks'
 import { Button, Card, Empty, ErrorState, Kbd, Label, Loading, PageHeader, Tag, cx, inputCls, timeAgo } from '../components/ui'
-import { ExtrasChips } from '../components/Extras'
+import { AttendanceBanner, ExtrasChips, LikeButton } from '../components/Extras'
 import { EvidencePanel, HistoryPanel, RuleChecks, VerdictSummary } from '../components/Evidence'
 
 const REASON_KEYS: ReasonCategory[] = ['skill_gap', 'minor_issue', 'capacity', 'rules_mismatch', 'scam_abuse']
@@ -123,8 +123,12 @@ export default function QueuePage() {
                   </div>
                   <div className="mt-1 truncate font-mono text-xs text-muted">{[cur.email, cur.github && `gh:${cur.github}`, cur.devpost && `dp:${cur.devpost}`, cur.chat_handle].filter(Boolean).join(' · ')} · {timeAgo(cur.created_at)}</div>
                 </div>
-                <Link to={`/c/${slug}/applicants/${cur.id}`} className="shrink-0 text-sm text-link hover:underline">Full detail →</Link>
+                <div className="flex shrink-0 items-center gap-3">
+                  {cur.extras && <LikeButton id={cur.id} liked={!!cur.extras.liked} onChange={v => q.setData(xs => (xs ?? []).map(x => x.id === cur.id && x.extras ? { ...x, extras: { ...x.extras, liked: v } } : x))} />}
+                  <Link to={`/c/${slug}/applicants/${cur.id}`} className="text-sm text-link hover:underline">Full detail →</Link>
+                </div>
               </div>
+              <div className="mt-4"><AttendanceBanner a={cur} /></div>
               <p className="mt-4 whitespace-pre-line text-sm leading-relaxed">{cur.what_build}</p>
               {cur.reconsideration.note && <p className="mt-3 rounded-lg border border-accept/20 bg-accept/[.04] px-3 py-2 text-sm">{cur.reconsideration.note}</p>}
               <AskApplicant key={cur.id} a={cur} onSaved={lq => q.setData(xs => (xs ?? []).map(x => x.id === cur.id ? { ...x, lead_question: lq } : x))} />

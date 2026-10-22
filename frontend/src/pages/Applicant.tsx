@@ -4,7 +4,7 @@ import { api, REASON_LABELS, RECONSIDERABLE } from '../api'
 import type { ReasonCategory } from '../api'
 import { useAsync } from '../hooks'
 import { Button, Card, ErrorState, Label, Loading, StatusBadge, Tag, fmtDate, timeAgo } from '../components/ui'
-import { ExtrasChips, ExtrasPanel } from '../components/Extras'
+import { AttendanceBanner, ExtrasChips, ExtrasPanel, LikeButton } from '../components/Extras'
 import { EvidencePanel, HistoryPanel, RuleChecks, VerdictSummary } from '../components/Evidence'
 
 export default function ApplicantPage() {
@@ -41,11 +41,15 @@ export default function ApplicantPage() {
           </div>
           <div className="mt-1.5 break-all font-mono text-xs text-muted">{[x.email, x.phone_masked, x.github && `github:${x.github}`, x.devpost && `devpost:${x.devpost}`, x.chat_handle].filter(Boolean).join(' · ')}</div>
         </div>
-        <div className="font-mono text-xs text-muted">applied {fmtDate(x.created_at)}{x.decided_at && ` · decided ${fmtDate(x.decided_at)}`}</div>
+        <div className="flex items-center gap-3">
+          {x.extras && <LikeButton id={x.id} liked={!!x.extras.liked} onChange={v => a.setData(d => d && d.extras ? { ...d, extras: { ...d.extras, liked: v } } : d)} />}
+          <div className="font-mono text-xs text-muted">applied {fmtDate(x.created_at)}{x.decided_at && ` · decided ${fmtDate(x.decided_at)}`}</div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-4">
+          <div><Label className="mb-2">Attendance at your past events</Label><AttendanceBanner a={x} /></div>
           <Card><Label>What they build</Label><p className="mt-2 whitespace-pre-line text-sm leading-relaxed">{x.what_build}</p></Card>
           <Card><VerdictSummary a={x} /></Card>
           <Card><Label className="mb-4">Rule-by-rule</Label><RuleChecks r={r} /></Card>

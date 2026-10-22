@@ -15,6 +15,8 @@ function Logo() {
 
 export function LlmBadge({ health }: { health: Health | null }) {
   if (!health) return null
+  if (!health.llm.available && health.llm.error?.startsWith('not yet verified'))
+    return <span title="Configured. Turns green after the first live application is scored; seeded data never calls the LLM." className="hidden items-center gap-1.5 rounded-md border border-line px-2 py-1 font-mono text-[11px] text-muted md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-muted/80" />{health.llm.label} · ready</span>
   return health.llm.available
     ? <span title={`Rule checks written by ${health.llm.label}`} className="hidden items-center gap-1.5 rounded-md border border-line px-2 py-1 font-mono text-[11px] text-accept md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-accept/80" />{health.llm.label}</span>
     : <span title={health.llm.error ?? undefined} className="hidden items-center gap-1.5 rounded-md border border-ask/25 bg-ask/5 px-2 py-1 font-mono text-[11px] text-ask md:inline-flex"><span className="h-1.5 w-1.5 rounded-full bg-ask/80" />LLM unavailable – rule-only reasoning</span>
@@ -119,7 +121,7 @@ function CommunitySwitcher({ slug, communities, onPick }: { slug: string; commun
 }
 
 const NAV = [
-  ['queue', 'Review queue'], ['applicants', 'Applicants'], ['blocklist', 'Blocklist'], ['settings', 'Rules & quotas'], ['eval', 'Evaluation'], ['moderation', 'Message check'],
+  ['queue', 'Review queue'], ['applicants', 'Applicants'], ['events', 'Past events'], ['blocklist', 'Blocklist'], ['settings', 'Rules & quotas'], ['eval', 'Evaluation'], ['moderation', 'Message check'],
 ] as const
 
 export function LeadLayout() {

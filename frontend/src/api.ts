@@ -11,6 +11,7 @@ export interface CommunityRef { id: string; slug: string; name: string }
 export interface ApplicantSummary {
   id: string; name: string; category: string; status: Status; final_score: number | null; confidence: number | null
   top_reason: string | null; decision_source: 'auto' | 'lead'; created_at: string; is_seed: boolean; reconsidered: boolean
+  attended?: number; no_show?: number; liked?: boolean
 }
 export interface RuleCheck { rule_id: string; rule: string; score: number; verdict: 'pass' | 'unclear' | 'fail'; reason: string; quote: string | null; source: 'llm' | 'heuristic' }
 export interface BlockMatch { entry_id: string; identifier_type: string; status: string; reporting_community: string; evidence: string; links: string[]; reported_at: string }
@@ -32,8 +33,10 @@ export interface AttendeeNote { id: string; flag: NoteFlag | null; note: string;
 export interface Extras {
   attendance: { attended: number; no_show: number; events: { event_name: string; event_date: string; status: 'attended' | 'no_show' }[] }
   ban: { id: string; reason: string; created_at: string; label: string | null } | null
+  liked?: boolean
   own_notes: AttendeeNote[]; shared_notes: AttendeeNote[]; shared_flags: { flag: NoteFlag; community_name: string }[]
 }
+export interface PastEvent { event_name: string; event_date: string; attended: number; no_show: number; attendees: { applicant_id: string; name: string; status: 'attended' | 'no_show'; liked: boolean }[] }
 export interface CommunityBan { id: string; identifier_type: string; label: string | null; reason: string; created_by: string; created_at: string }
 export interface StatusView {
   name: string; community_name: string; community_slug: string; category: string; decision: Status
@@ -110,7 +113,7 @@ export const api = {
   saveSettings: (slug: string, body: { rules: Rule[]; categories: Omit<CategoryQuota, 'used' | 'remaining' | 'waitlisted'>[]; reconsider_cooldown_days: number }) =>
     req<Community>('PUT', `/communities/${slug}/settings`, body),
   apply: (slug: string, body: ApplyIn) => req<ApplicantDetail>('POST', `/communities/${slug}/apply`, body, 60000),
-  applicants: (slug: string, f: { status?: string; category?: string; q?: string }) => req<ApplicantSummary[]>('GET', `/communities/${slug}/applicants${q(f)}`),
+  applicants: (slug: string, f: { status?: string; category?: string; q?: string; liked?: string; returning?: string }) => req<ApplicantSummary[]>('GET', `/communities/${slug}/applicants${q(f)}`),
   queue: (slug: string) => req<ApplicantDetail[]>('GET', `/communities/${slug}/queue`),
   applicant: (id: string) => req<ApplicantDetail>('GET', `/applicants/${id}`),
   decide: (id: string, body: { verdict: 'accept' | 'ask_more' | 'decline'; reason_category?: ReasonCategory; note?: string }) =>
@@ -136,6 +139,9 @@ export const api = {
   status: (token: string) => req<StatusView>('GET', `/status/${token}`),
   reply: (token: string, text: string) => req<StatusView>('POST', `/status/${token}/reply`, { text }),
   askApplicant: (id: string, question: string) => req<{ ok: boolean; lead_question: string }>('POST', `/applicants/${id}/question`, { question }),
+  like: (id: string) => req<{ liked: boolean }>('POST', `/applicants/${id}/like`),
+  unlike: (id: string) => req<{ liked: boolean }>('DELETE', `/applicants/${id}/like`),
+  events: (slug: string) => req<PastEvent[]>('GET', `/communities/${slug}/events`),
   evalReport: () => req<EvalReport>('GET', '/eval'),
   runEval: () => req<EvalReport>('POST', '/eval/run', undefined, 180000),
   checkMessage: (text: string) => req<{ scam_probability: number; label: string; top_terms: { term: string; weight: number }[]; draft_removal: string }>('POST', '/messages/check', { text }),
