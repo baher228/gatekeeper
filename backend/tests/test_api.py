@@ -79,6 +79,33 @@ def test_applicant_routes_and_decline_validation(client):
     assert missing.status_code == 404
 
 
+def test_seeded_queue_cards_have_real_recommendations(client):
+    response = client.get("/api/communities/grok-night-london/queue")
+
+    assert response.status_code == 200, response.text
+    applicants = response.json()
+    assert len(applicants) == 6
+    for applicant in applicants:
+        recommendation = applicant["recommendation"]
+        assert recommendation["history"]["available"] is True
+        assert recommendation["rule_checks"]
+
+
+def test_seed_history_model_has_positive_build_signal(client):
+    from app.services.history import train_model
+
+    with connect() as conn:
+        community_id = conn.execute(
+            "select id from communities where slug='grok-night-london'"
+        ).fetchone()["id"]
+    model = train_model(str(community_id))
+    weights = {item["feature"]: item["weight"] for item in model["coefficients"]}
+
+    assert model["available"] is True
+    assert model["n_decisions"] == 120
+    assert weights["rule_score"] > 0 or weights["gh_repos_log"] > 0
+
+
 def test_message_check_uses_cached_sms_model(client, monkeypatch):
     from app.services import message_classifier
 

@@ -40,6 +40,55 @@ def feature_vector(applicant: dict, recommendation: dict, evidence: dict, catego
     return values
 
 
+def fit(rows: list[dict], feature_names: list[str]) -> Pipeline | None:
+    if len(rows) < 10 or len({row["verdict"] for row in rows}) < 2:
+        return None
+    matrix = np.asarray(
+        [
+            [float((row.get("features") or {}).get(name, 0)) for name in feature_names]
+            for row in rows
+        ]
+    )
+    labels = np.asarray([int(row["verdict"] == "accept") for row in rows])
+    pipeline = Pipeline(
+        [
+            ("scale", StandardScaler()),
+            ("logistic", LogisticRegression(C=1.0, class_weight="balanced", max_iter=1000)),
+        ]
+    )
+    pipeline.fit(matrix, labels)
+    return pipeline
+
+
+def predict_from_model(
+    model: Pipeline,
+    feature_names: list[str],
+    vector: dict,
+    n_training: int,
+) -> dict:
+    values = [float(vector.get(name, 0)) for name in feature_names]
+    scaled = model.named_steps["scale"].transform([values])[0]
+    contributions = model.named_steps["logistic"].coef_[0] * scaled
+    top = sorted(
+        (
+            {
+                "feature": name,
+                "value": float(vector.get(name, 0)),
+                "contribution": float(contribution),
+            }
+            for name, contribution in zip(feature_names, contributions)
+        ),
+        key=lambda item: abs(item["contribution"]),
+        reverse=True,
+    )[:4]
+    return {
+        "available": True,
+        "p_accept": float(model.predict_proba([values])[0, 1]),
+        "n_training": n_training,
+        "top_features": top,
+    }
+
+
 def train_model(community_id: str, categories: list[str] | None = None) -> dict:
     with connect() as conn:
         rows = conn.execute(
@@ -56,12 +105,11 @@ def train_model(community_id: str, categories: list[str] | None = None) -> dict:
         n_decline = sum(row["verdict"] == "decline" for row in rows)
         features = BASE_FEATURES + [f"category_{name}" for name in categories]
         latest = rows[-1]["created_at"] if rows else None
-        if len(rows) < 10 or not n_accept or not n_decline:
+        if not n_accept or not n_decline:
             return {"available": False, "n_decisions": len(rows), "n_accept": n_accept, "n_decline": n_decline, "trained_at": latest, "coefficients": []}
-        matrix = np.array([[float((row["features"] or {}).get(f, 0)) for f in features] for row in rows])
-        labels = np.array([int(row["verdict"] == "accept") for row in rows])
-        pipeline = Pipeline([("scale", StandardScaler()), ("logistic", LogisticRegression(C=1.0, class_weight="balanced", max_iter=1000))])
-        pipeline.fit(matrix, labels)
+        pipeline = fit(rows, features)
+        if pipeline is None:
+            return {"available": False, "n_decisions": len(rows), "n_accept": n_accept, "n_decline": n_decline, "trained_at": latest, "coefficients": []}
         _cache[community_id] = (pipeline, features, len(rows))
         coefficients = [
             {"feature": name, "weight": float(weight)}
@@ -83,11 +131,4 @@ def predict(community_id: str, vector: dict, categories: list[str] | None = None
         if not cached:
             return {"available": False, "p_accept": None, "n_training": info["n_decisions"], "top_features": []}
     model, names, n = cached
-    scaled = model.named_steps["scale"].transform([[float(vector.get(name, 0)) for name in names]])[0]
-    contributions = model.named_steps["logistic"].coef_[0] * scaled
-    top = sorted(
-        ({"feature": name, "value": float(vector.get(name, 0)), "contribution": float(contribution)}
-         for name, contribution in zip(names, contributions)),
-        key=lambda item: abs(item["contribution"]), reverse=True,
-    )[:4]
-    return {"available": True, "p_accept": float(model.predict_proba([[float(vector.get(name, 0)) for name in names]])[0, 1]), "n_training": n, "top_features": top}
+    return predict_from_model(model, names, vector, n)

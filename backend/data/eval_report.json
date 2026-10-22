@@ -1,79 +1,234 @@
 {
-  "generated_at": "2026-10-22T18:09:43.124459+00:00",
+  "generated_at": "2026-10-22T18:22:06.673075+00:00",
+  "n_train": 120,
   "test_set": {
-    "n": 100,
-    "n_accept": 60,
-    "n_decline": 40,
-    "n_scam": 15,
-    "n_edge": 30,
-    "source": "Synthetic held-out fixtures (random.Random(7)); scam message samples from cached UCI SMS Spam rows when available."
+    "n": 150,
+    "n_accept": 74,
+    "n_decline": 76,
+    "n_scam": 14,
+    "n_edge": 53,
+    "source": "make_applicant(random.Random(2026)); labels from lead_label."
   },
   "train_set": {
-    "n": 74,
-    "source": "Grok Night London seed decisions only"
+    "n": 120,
+    "source": "120 seed decisions from make_applicant(random.Random(42))."
   },
   "variants": [
     {
       "name": "rules_only",
-      "accuracy": 0.7,
-      "accept_precision": 1.0,
-      "accept_recall": 0.6666666666666666,
-      "decline_precision": 0.7272727272727273,
-      "decline_recall": 1.0,
-      "false_block_rate": 0.25,
-      "ask_rate": 0.15,
-      "accuracy_on_decided": 0.8235294117647058,
+      "n": 150,
+      "n_train": 0,
+      "accuracy": 0.6866666666666666,
+      "accuracy_on_decided": 0.8046875,
+      "accept_precision": 0.8918918918918919,
+      "accept_recall": 0.6111111111111112,
+      "decline_precision": 0.7692307692307693,
+      "decline_recall": 0.9459459459459459,
+      "false_block_rate": 0.28378378378378377,
+      "ask_rate": 0.14666666666666667,
       "confusion": {
-        "accept_tp": 30,
-        "accept_fp": 0,
-        "accept_fn": 15,
-        "decline_tp": 40,
-        "decline_fp": 15,
-        "decline_fn": 0,
-        "ask": 15
+        "accept_tp": 33,
+        "accept_fp": 4,
+        "accept_fn": 21,
+        "decline_tp": 70,
+        "decline_fp": 21,
+        "decline_fn": 4,
+        "ask": 22
       },
-      "n": 100
+      "confusion_matrix": {
+        "accept": {
+          "accept": 33,
+          "ask": 20,
+          "decline": 21
+        },
+        "decline": {
+          "accept": 4,
+          "ask": 2,
+          "decline": 70
+        }
+      },
+      "by_kind": {
+        "strong_builder": {
+          "n": 39,
+          "accuracy": 0.8205128205128205,
+          "ask_rate": 0.07692307692307693
+        },
+        "weak_vague": {
+          "n": 30,
+          "accuracy": 0.9666666666666667,
+          "ask_rate": 0.0
+        },
+        "first_timer_concrete": {
+          "n": 23,
+          "accuracy": 0.0,
+          "ask_rate": 0.391304347826087
+        },
+        "researcher_paper": {
+          "n": 15,
+          "accuracy": 0.06666666666666667,
+          "ask_rate": 0.6666666666666666
+        },
+        "new_account_polished": {
+          "n": 15,
+          "accuracy": 0.9333333333333333,
+          "ask_rate": 0.0
+        },
+        "recruiter_seller": {
+          "n": 14,
+          "accuracy": 1.0,
+          "ask_rate": 0.0
+        },
+        "scammer": {
+          "n": 14,
+          "accuracy": 0.9285714285714286,
+          "ask_rate": 0.0
+        }
+      }
     },
     {
       "name": "rules_plus_history",
-      "accuracy": 0.38,
-      "accept_precision": 1.0,
-      "accept_recall": 0.5,
-      "decline_precision": 0.21052631578947367,
-      "decline_recall": 1.0,
-      "false_block_rate": 0.5,
-      "ask_rate": 0.32,
-      "accuracy_on_decided": 0.5588235294117647,
+      "n": 150,
+      "n_train": 120,
+      "accuracy": 0.7133333333333334,
+      "accuracy_on_decided": 0.9304347826086956,
+      "accept_precision": 0.9047619047619048,
+      "accept_recall": 0.9047619047619048,
+      "decline_precision": 0.9452054794520548,
+      "decline_recall": 0.9452054794520548,
+      "false_block_rate": 0.05405405405405406,
+      "ask_rate": 0.23333333333333334,
       "confusion": {
-        "accept_tp": 30,
-        "accept_fp": 0,
-        "accept_fn": 30,
-        "decline_tp": 8,
-        "decline_fp": 30,
-        "decline_fn": 0,
-        "ask": 32
+        "accept_tp": 38,
+        "accept_fp": 4,
+        "accept_fn": 4,
+        "decline_tp": 69,
+        "decline_fp": 4,
+        "decline_fn": 4,
+        "ask": 35
       },
-      "n": 100
+      "confusion_matrix": {
+        "accept": {
+          "accept": 38,
+          "ask": 32,
+          "decline": 4
+        },
+        "decline": {
+          "accept": 4,
+          "ask": 3,
+          "decline": 69
+        }
+      },
+      "by_kind": {
+        "strong_builder": {
+          "n": 39,
+          "accuracy": 0.8717948717948718,
+          "ask_rate": 0.02564102564102564
+        },
+        "weak_vague": {
+          "n": 30,
+          "accuracy": 0.9333333333333333,
+          "ask_rate": 0.03333333333333333
+        },
+        "first_timer_concrete": {
+          "n": 23,
+          "accuracy": 0.043478260869565216,
+          "ask_rate": 0.9130434782608695
+        },
+        "researcher_paper": {
+          "n": 15,
+          "accuracy": 0.2,
+          "ask_rate": 0.8
+        },
+        "new_account_polished": {
+          "n": 15,
+          "accuracy": 0.9333333333333333,
+          "ask_rate": 0.0
+        },
+        "recruiter_seller": {
+          "n": 14,
+          "accuracy": 1.0,
+          "ask_rate": 0.0
+        },
+        "scammer": {
+          "n": 14,
+          "accuracy": 0.9285714285714286,
+          "ask_rate": 0.0
+        }
+      }
     }
   ],
   "notes": [
-    "Both variants use deterministic heuristic rule checks; no Grok/LLM calls were made.",
+    "Synthetic lead policy: accept strong builders, concrete first-timers, and researchers; decline vague, new-account, recruiter/seller, and scammer applications.",
+    "Held-out applicants use random.Random(2026); training applicants use random.Random(42).",
+    "Both variants use heuristic rule checks; no LLM calls were made.",
+    "Labels include 8% noise from the synthetic lead policy.",
     "Ask counts as incorrect in overall accuracy and is excluded from accuracy_on_decided.",
     "Thresholds were not tuned using the held-out test set.",
-    "Blocklist fixtures cover about half of synthetic scammers; the remainder rely on text and evidence."
+    "Exactly half of the scammer examples have a confirmed blocklist match."
   ],
   "edge_cases": [
     {
-      "name": "edge_real_unusual",
-      "label": "accept",
-      "rules_only": "ask",
-      "rules_plus_history": "declined"
+      "kind": "strong_builder",
+      "label_distribution": {
+        "accept": 35,
+        "decline": 4
+      },
+      "rules_only_accuracy": 0.8205128205128205,
+      "rules_plus_history_accuracy": 0.8717948717948718
     },
     {
-      "name": "edge_spammy_real",
-      "label": "accept",
-      "rules_only": "declined",
-      "rules_plus_history": "declined"
+      "kind": "weak_vague",
+      "label_distribution": {
+        "accept": 1,
+        "decline": 29
+      },
+      "rules_only_accuracy": 0.9666666666666667,
+      "rules_plus_history_accuracy": 0.9333333333333333
+    },
+    {
+      "kind": "first_timer_concrete",
+      "label_distribution": {
+        "accept": 21,
+        "decline": 2
+      },
+      "rules_only_accuracy": 0.0,
+      "rules_plus_history_accuracy": 0.043478260869565216
+    },
+    {
+      "kind": "researcher_paper",
+      "label_distribution": {
+        "accept": 15,
+        "decline": 0
+      },
+      "rules_only_accuracy": 0.06666666666666667,
+      "rules_plus_history_accuracy": 0.2
+    },
+    {
+      "kind": "new_account_polished",
+      "label_distribution": {
+        "accept": 1,
+        "decline": 14
+      },
+      "rules_only_accuracy": 0.9333333333333333,
+      "rules_plus_history_accuracy": 0.9333333333333333
+    },
+    {
+      "kind": "recruiter_seller",
+      "label_distribution": {
+        "accept": 0,
+        "decline": 14
+      },
+      "rules_only_accuracy": 1.0,
+      "rules_plus_history_accuracy": 1.0
+    },
+    {
+      "kind": "scammer",
+      "label_distribution": {
+        "accept": 1,
+        "decline": 13
+      },
+      "rules_only_accuracy": 0.9285714285714286,
+      "rules_plus_history_accuracy": 0.9285714285714286
     }
   ]
 }
