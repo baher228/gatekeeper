@@ -1,7 +1,12 @@
 import asyncio
 import json
+from types import SimpleNamespace
+
+import openai
+import pytest
 
 from app.services import llm
+from app.routes import misc
 from app.services.rules import check_rules
 
 
@@ -114,3 +119,65 @@ def test_check_rules_accepts_valid_json_with_verbatim_quote(monkeypatch):
     }
     assert checks[0]["source"] == "llm"
     assert checks[0]["quote"] == "built a library tool"
+
+
+def test_health_reports_llm_verification_state(monkeypatch):
+    monkeypatch.setenv("LLM_PROVIDER", "gemini")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setattr(llm, "last_ok", None)
+    monkeypatch.setattr(llm, "last_error", None)
+
+    class Connection:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def execute(self, _query):
+            return None
+
+    monkeypatch.setattr(misc, "connect", Connection)
+
+    before = misc.health()["llm"]
+    assert before["available"] is False
+    assert before["verified"] is False
+    assert before["error"] == "not yet verified – no LLM call made since startup"
+
+    class SuccessfulClient:
+        def __init__(self, **_kwargs):
+            self.chat = SimpleNamespace(
+                completions=SimpleNamespace(
+                    create=self.create,
+                )
+            )
+
+        async def create(self, **_kwargs):
+            return SimpleNamespace(
+                choices=[SimpleNamespace(message=SimpleNamespace(content="{}"))]
+            )
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return False
+
+    monkeypatch.setattr(openai, "AsyncOpenAI", SuccessfulClient)
+    asyncio.run(llm.complete_json([]))
+    after_success = misc.health()["llm"]
+    assert after_success["available"] is True
+    assert after_success["verified"] is True
+    assert after_success["error"] is None
+
+    class FailedClient(SuccessfulClient):
+        async def create(self, **_kwargs):
+            raise RuntimeError("simulated provider failure")
+
+    monkeypatch.setattr(openai, "AsyncOpenAI", FailedClient)
+    with pytest.raises(RuntimeError, match="simulated provider failure"):
+        asyncio.run(llm.complete_json([]))
+    after_failure = misc.health()["llm"]
+    assert after_failure["available"] is False
+    assert after_failure["verified"] is True
+    assert after_failure["error"] == "simulated provider failure"

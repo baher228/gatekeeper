@@ -80,5 +80,6 @@ EvalReport = {generated_at, test_set: {n, n_accept, n_decline, n_scam, n_edge, s
 ```
 
 ## Misc
-- `GET /health` → `{ok, db, llm: {available, provider, model, error}, github_token: bool}`
+- `GET /health` → `{ok, db, llm: {available, provider, model, verified, error}, github_token: bool}`
+- `llm.verified` is false until a completion call has succeeded or failed since startup; `llm.available` is true only when the provider is configured and the latest completion succeeded.
 - Stretch: `POST /messages/check` body `{text}` → `{scam_probability, label, top_terms: [{term, weight}], draft_removal}`

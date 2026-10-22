@@ -51,7 +51,7 @@ export interface EvalReport {
   generated_at: string; test_set: { n: number; n_accept: number; n_decline: number; n_scam: number; n_edge: number; source: string }
   train_set: { n: number; source: string }; variants: EvalVariant[]; notes: string[]
 }
-export interface Health { ok: boolean; db: string | boolean; llm: { available: boolean; provider: string | null; model: string | null; error: string | null }; github_token: boolean }
+export interface Health { ok: boolean; db: string | boolean; llm: { available: boolean; provider: string | null; model: string | null; verified: boolean; error: string | null }; github_token: boolean }
 export interface ApplyIn { name: string; email: string; phone?: string; github?: string; devpost?: string; chat_handle?: string; what_build: string; category: string }
 
 export class ApiError extends Error { status: number; constructor(status: number, msg: string) { super(msg); this.status = status } }

@@ -203,14 +203,18 @@ def health():
         db_ok = False
     settings = llm.config()
     llm_error = llm.last_error
-    if llm_error is None and not settings["configured"]:
-        llm_error = llm.configuration_error(settings)
+    if llm_error is None:
+        if not settings["configured"]:
+            llm_error = llm.configuration_error(settings)
+        elif llm.last_ok is None:
+            llm_error = "not yet verified – no LLM call made since startup"
     return {
         "ok": db_ok, "db": "connected" if db_ok else "unavailable",
         "llm": {
-            "available": bool(settings["configured"] and llm.last_error is None),
+            "available": bool(settings["configured"] and llm.last_ok is True),
             "provider": settings["provider"],
             "model": settings["model"],
+            "verified": llm.last_ok is not None,
             "error": llm_error,
         },
         "github_token": bool(os.getenv("GITHUB_TOKEN")),

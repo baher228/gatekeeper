@@ -20,6 +20,7 @@ PROVIDERS = {
 }
 
 last_error: str | None = None
+last_ok: bool | None = None
 
 
 @lru_cache(maxsize=8)
@@ -94,11 +95,12 @@ def _short_error(error: Exception) -> str:
 
 
 async def complete_json(messages: list[dict]) -> str:
-    global last_error
+    global last_error, last_ok
 
     last_error = None
     settings = config()
     if not settings["configured"]:
+        last_ok = False
         last_error = configuration_error(settings)
         raise RuntimeError(last_error)
 
@@ -117,7 +119,10 @@ async def complete_json(messages: list[dict]) -> str:
                 response_format={"type": "json_object"},
                 messages=messages,
             )
-        return response.choices[0].message.content or ""
+        content = response.choices[0].message.content or ""
+        last_ok = True
+        return content
     except Exception as error:
+        last_ok = False
         last_error = _short_error(error)
         raise
