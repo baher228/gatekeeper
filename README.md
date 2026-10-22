@@ -11,7 +11,14 @@ The lead writes the community's rules in plain English and sets seat quotas per 
 5. **Reconsiders** old declines for a skill gap, a minor issue or capacity after a cool-down. Scam/abuse declines are never reconsidered.
 6. Shares a **blocklist** between communities: a scammer confirmed by community A is stopped at community B, with evidence. Only hashes are shared, and Postgres RLS keeps pending reports private.
 
-<!-- SCREENSHOTS -->
+| Review queue (borderline cases, one card at a time) | Strong builder auto-accepted with reasons |
+|---|---|
+| ![Review queue](docs/screenshots/queue.png) | ![Accepted](docs/screenshots/accepted.png) |
+| **Known scammer stopped by community A's confirmed report** | **Old skill-gap decline reconsidered** |
+| ![Blocklist decline](docs/screenshots/blocklist-decline.png) | ![Reconsidered](docs/screenshots/reconsidered.png) |
+| **Evaluation: rules only vs rules + history** | |
+| ![Evaluation](docs/screenshots/evaluation.png) | |
+
 
 ## Architecture
 
