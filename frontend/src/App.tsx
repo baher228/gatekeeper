@@ -1,3 +1,4 @@
+import { LandingPage } from './pages/Landing'
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { LeadLayout, PublicLayout } from './components/Layout'
 import QueuePage from './pages/Queue'
@@ -11,7 +12,6 @@ import AppealPage from './pages/Appeal'
 import MessageCheckPage from './pages/MessageCheck'
 
 export const DEFAULT_SLUG = 'grok-night-london'
-const lastSlug = () => localStorage.getItem('gk.community') ?? DEFAULT_SLUG
 
 function CommunityRedirect() {
   const { slug } = useParams()
@@ -21,7 +21,7 @@ function CommunityRedirect() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={`/c/${lastSlug()}/queue`} replace />} />
+      <Route path="/" element={<LandingPage />} />
       <Route element={<PublicLayout />}>
         <Route path="/apply/:slug" element={<ApplyPage />} />
         <Route path="/appeal" element={<AppealPage />} />

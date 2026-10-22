@@ -24,7 +24,8 @@ export function VerdictSummary({ a, compact = false }: { a: ApplicantDetail; com
         {r.disagreement && <Tag tone="ask">model disagrees</Tag>}
         {r.llm.status === 'live' ? <Tag tone="accept">{r.llm.provider} · {r.llm.model}</Tag>
           : r.llm.status === 'cached' ? <Tag tone="accept" title="Reused from the original submission">Cached LLM checks · {r.llm.provider}</Tag>
-            : <Tag title={r.llm.error ?? undefined} tone="ask" className="max-w-full truncate">LLM unavailable – rule-only reasoning</Tag>}
+            : r.llm.error?.startsWith('seed data') ? <Tag title="Synthetic seed applicant, scored with heuristic rules at seed time">seeded · scored without LLM</Tag>
+              : <Tag title={r.llm.error ?? undefined} tone="ask" className="max-w-full truncate">LLM unavailable – rule-only reasoning</Tag>}
       </div>
       <div className="mt-2 text-sm text-muted">{ROUTE_LABELS[r.route_rule] ?? r.route_rule}{a.decline_reason && ` · ${REASON_LABELS[a.decline_reason]}`}</div>
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
