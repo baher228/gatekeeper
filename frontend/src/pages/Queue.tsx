@@ -9,6 +9,35 @@ import { EvidencePanel, HistoryPanel, RuleChecks, VerdictSummary } from '../comp
 
 const REASON_KEYS: ReasonCategory[] = ['skill_gap', 'minor_issue', 'capacity', 'rules_mismatch', 'scam_abuse']
 
+function AskApplicant({ a, onSaved }: { a: ApplicantDetail; onSaved: (q: string) => void }) {
+  const [text, setText] = useState(a.lead_question ?? '')
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+  const [saved, setSaved] = useState(false)
+  if (a.status !== 'ask') return null
+  const save = async () => {
+    setBusy(true); setErr(null)
+    try { const r = await api.askApplicant(a.id, text.trim()); onSaved(r.lead_question); setSaved(true) } catch (e) { setErr((e as Error).message) } finally { setBusy(false) }
+  }
+  return (
+    <div className="mt-4 rounded-lg border border-line p-3">
+      <Label>Ask applicant</Label>
+      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+        <input className={inputCls} maxLength={1000} value={text} onChange={e => { setText(e.target.value); setSaved(false) }} placeholder="e.g. Can you share a link to the demo you mentioned?" />
+        <Button disabled={busy || !text.trim() || text.trim() === (a.lead_question ?? '')} onClick={save}>{busy ? 'Sending…' : saved ? 'Sent' : a.lead_question ? 'Update question' : 'Send question'}</Button>
+      </div>
+      <p className="mt-1.5 text-xs text-muted">Shown on the applicant's status page; their reply appears here.</p>
+      {err && <p className="mt-1.5 text-sm text-decline">{err}</p>}
+      {a.applicant_reply && (
+        <div className="mt-3 rounded-lg border border-accept/20 bg-accept/[.04] px-3 py-2">
+          <div className="font-mono text-[11px] text-muted">applicant replied{a.applicant_reply_at && ` · ${timeAgo(a.applicant_reply_at)}`}</div>
+          <p className="mt-1 whitespace-pre-line text-sm">{a.applicant_reply}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function QueuePage() {
   const { slug = '' } = useParams()
   const q = useAsync(() => api.queue(slug), [slug])
@@ -98,6 +127,7 @@ export default function QueuePage() {
               </div>
               <p className="mt-4 whitespace-pre-line text-sm leading-relaxed">{cur.what_build}</p>
               {cur.reconsideration.note && <p className="mt-3 rounded-lg border border-accept/20 bg-accept/[.04] px-3 py-2 text-sm">{cur.reconsideration.note}</p>}
+              <AskApplicant key={cur.id} a={cur} onSaved={lq => q.setData(xs => (xs ?? []).map(x => x.id === cur.id ? { ...x, lead_question: lq } : x))} />
             </div>
             <div className="border-b border-line p-5"><VerdictSummary a={cur} compact /></div>
             <div className="p-5">

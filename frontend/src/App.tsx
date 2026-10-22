@@ -9,6 +9,7 @@ import SettingsPage from './pages/Settings'
 import EvalPage from './pages/Evaluation'
 import ApplyPage from './pages/Apply'
 import AppealPage from './pages/Appeal'
+import StatusPage from './pages/Status'
 import MessageCheckPage from './pages/MessageCheck'
 
 export const DEFAULT_SLUG = 'grok-night-london'
@@ -25,6 +26,7 @@ export default function App() {
       <Route element={<PublicLayout />}>
         <Route path="/apply/:slug" element={<ApplyPage />} />
         <Route path="/appeal" element={<AppealPage />} />
+        <Route path="/status/:token" element={<StatusPage />} />
       </Route>
       <Route path="/c/:slug" element={<LeadLayout />}>
         <Route index element={<CommunityRedirect />} />

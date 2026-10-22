@@ -35,7 +35,13 @@ export interface Extras {
   own_notes: AttendeeNote[]; shared_notes: AttendeeNote[]; shared_flags: { flag: NoteFlag; community_name: string }[]
 }
 export interface CommunityBan { id: string; identifier_type: string; label: string | null; reason: string; created_by: string; created_at: string }
+export interface StatusView {
+  name: string; community_name: string; community_slug: string; category: string; decision: Status
+  waitlist_position: number | null; lead_question: string | null; applicant_reply: string | null; applicant_reply_at: string | null
+  message: string; invite_url: string | null; appeal_url: string | null
+}
 export interface ApplicantDetail extends ApplicantSummary {
+  status_token?: string; lead_question?: string | null; applicant_reply?: string | null; applicant_reply_at?: string | null
   extras?: Extras
   community_slug: string; email: string; phone_masked: string | null; github: string | null; devpost: string | null; chat_handle: string | null
   what_build: string; decided_at: string | null; decline_reason: ReasonCategory | null
@@ -127,6 +133,9 @@ export const api = {
   banApplicant: (id: string, reason: string) => req<{ ok: boolean; count: number }>('POST', `/applicants/${id}/ban`, { reason }),
   addNote: (id: string, body: { flag: NoteFlag | null; note: string; visibility: 'private' | 'shared' }) => req<AttendeeNote>('POST', `/applicants/${id}/notes`, body),
   deleteNote: (id: string, noteId: string) => req<unknown>('DELETE', `/applicants/${id}/notes/${noteId}`),
+  status: (token: string) => req<StatusView>('GET', `/status/${token}`),
+  reply: (token: string, text: string) => req<StatusView>('POST', `/status/${token}/reply`, { text }),
+  askApplicant: (id: string, question: string) => req<{ ok: boolean; lead_question: string }>('POST', `/applicants/${id}/question`, { question }),
   evalReport: () => req<EvalReport>('GET', '/eval'),
   runEval: () => req<EvalReport>('POST', '/eval/run', undefined, 180000),
   checkMessage: (text: string) => req<{ scam_probability: number; label: string; top_terms: { term: string; weight: number }[]; draft_removal: string }>('POST', '/messages/check', { text }),

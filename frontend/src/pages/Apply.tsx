@@ -9,6 +9,20 @@ import { VerdictSummary } from '../components/Evidence'
 
 const EMPTY: ApplyIn = { name: '', email: '', phone: '', github: '', devpost: '', chat_handle: '', what_build: '', category: '' }
 
+function TrackLink({ token }: { token: string }) {
+  const url = `${window.location.origin}/status/${token}`
+  const [copied, setCopied] = useState(false)
+  return (
+    <div className="mt-4">
+      <div className="text-sm">Track your application:</div>
+      <div className="mt-1.5 flex gap-2">
+        <Link to={`/status/${token}`} className="min-w-0 flex-1 truncate rounded-lg border border-line bg-bg px-3 py-2 font-mono text-xs text-link hover:underline">{url}</Link>
+        <Button onClick={() => { navigator.clipboard?.writeText(url); setCopied(true) }}>{copied ? 'Copied' : 'Copy'}</Button>
+      </div>
+    </div>
+  )
+}
+
 export default function ApplyPage() {
   const { slug = '' } = useParams()
   const c = useAsync(() => api.community(slug), [slug])
@@ -39,6 +53,7 @@ export default function ApplyPage() {
         <Label>Application received</Label>
         <h1 className="mt-1.5 text-xl font-semibold">Thanks, {result.name.split(' ')[0]}.</h1>
         <p className="mt-2 text-sm text-muted">{com.name} has your application. You’ll hear back from the lead. Gatekeeper doesn’t send email (that’s a hackathon cut).</p>
+        {result.status_token && <TrackLink token={result.status_token} />}
       </Card>
       <Card className="border-dashed">
         <div className="mb-4 flex items-center justify-between gap-2">
