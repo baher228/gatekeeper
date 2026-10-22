@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 import shutil
+import signal
 import tempfile
 from functools import lru_cache
 
@@ -167,7 +168,12 @@ async def _complete_with_cursor(messages: list[dict], settings: dict) -> str:
     )
     workdir = tempfile.mkdtemp(prefix="gatekeeper-llm-")
     process = None
+    stdout_file = None
+    stderr_file = None
     try:
+        output_dir = os.path.dirname(workdir)
+        stdout_file = tempfile.TemporaryFile(dir=output_dir)
+        stderr_file = tempfile.TemporaryFile(dir=output_dir)
         env = os.environ.copy()
         api_key = os.getenv(provider_settings["key_env"])
         if api_key:
@@ -183,23 +189,24 @@ async def _complete_with_cursor(messages: list[dict], settings: dict) -> str:
             _cursor_prompt(messages),
             cwd=workdir,
             env=env,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
+            stdout=stdout_file,
+            stderr=stderr_file,
+            start_new_session=True,
         )
         try:
-            stdout, _stderr = await asyncio.wait_for(process.communicate(), timeout=60)
+            await asyncio.wait_for(process.wait(), timeout=60)
         except asyncio.TimeoutError as error:
             try:
-                process.kill()
-            except ProcessLookupError:
+                os.killpg(process.pid, signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
                 pass
-            await process.communicate()
             raise TimeoutError("Cursor agent timed out after 60 seconds") from error
 
         if process.returncode != 0:
             raise RuntimeError(f"Cursor agent exited with status {process.returncode}")
         try:
-            response = json.loads(stdout.decode("utf-8"))
+            stdout_file.seek(0)
+            response = json.loads(stdout_file.read().decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as error:
             raise ValueError("Cursor agent returned invalid JSON") from error
         if not isinstance(response, dict):
@@ -214,12 +221,15 @@ async def _complete_with_cursor(messages: list[dict], settings: dict) -> str:
             raise RuntimeError("Cursor agent result was not text")
         return _first_json_object(response["result"])
     finally:
-        if process is not None and process.returncode is None:
+        if process is not None:
             try:
-                process.kill()
-            except ProcessLookupError:
+                os.killpg(process.pid, signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
                 pass
-            await process.communicate()
+        if stdout_file is not None:
+            stdout_file.close()
+        if stderr_file is not None:
+            stderr_file.close()
         shutil.rmtree(workdir, ignore_errors=True)
 
 

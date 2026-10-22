@@ -244,23 +244,29 @@ def test_cursor_health_label_uses_friendly_model_name(monkeypatch):
 
 
 def _cursor_process(monkeypatch, envelope, calls=None, on_call=None):
+    kill_groups = []
+
     class Process:
-        returncode = 0
+        pid = 12345
 
-        async def communicate(self):
-            return json.dumps(envelope).encode(), b""
+        def __init__(self):
+            self.returncode = None
 
-        def kill(self):
-            self.returncode = -9
+        async def wait(self):
+            self.returncode = 0
+            return self.returncode
 
     async def create_subprocess_exec(*args, **kwargs):
         if calls is not None:
             calls.append((args, kwargs))
         if on_call is not None:
             on_call(args, kwargs)
+        kwargs["stdout"].write(json.dumps(envelope).encode())
         return Process()
 
+    monkeypatch.setattr(llm.os, "killpg", lambda pid, sig: kill_groups.append((pid, sig)))
     monkeypatch.setattr(asyncio, "create_subprocess_exec", create_subprocess_exec)
+    return kill_groups
 
 
 def _configure_cursor(monkeypatch):
@@ -275,6 +281,7 @@ def test_cursor_extracts_result_json_and_uses_fresh_empty_workdir(monkeypatch):
     _configure_cursor(monkeypatch)
     calls = []
     workdirs = []
+    kill_groups = []
 
     def check_workdir(_args, kwargs):
         cwd = Path(kwargs["cwd"])
@@ -283,7 +290,7 @@ def test_cursor_extracts_result_json_and_uses_fresh_empty_workdir(monkeypatch):
         assert list(cwd.iterdir()) == []
         workdirs.append(cwd)
 
-    _cursor_process(
+    kill_groups = _cursor_process(
         monkeypatch,
         {
             "is_error": False,
@@ -310,6 +317,10 @@ def test_cursor_extracts_result_json_and_uses_fresh_empty_workdir(monkeypatch):
     assert "Applicant details" in args[-1]
     assert args[-1].endswith("Respond with a single JSON object only, no prose, no code fences.")
     assert kwargs["env"]["CURSOR_API_KEY"] == "test-cursor-key"
+    assert kwargs["start_new_session"] is True
+    assert kwargs["stdout"] is not asyncio.subprocess.PIPE
+    assert kwargs["stderr"] is not asyncio.subprocess.PIPE
+    assert kill_groups == [(12345, llm.signal.SIGKILL)]
 
 
 def test_cursor_error_falls_back_with_unavailable_status(monkeypatch):
@@ -353,6 +364,29 @@ def test_cursor_failure_uses_at_most_two_attempts(monkeypatch):
 
     assert len(calls) == 2
     assert llm.calls_made == 2
+
+
+def test_cursor_timeout_kills_process_group_without_waiting_for_output_eof(monkeypatch):
+    _configure_cursor(monkeypatch)
+    calls = []
+    kill_groups = _cursor_process(
+        monkeypatch,
+        {"is_error": False, "result": '{"checks": []}'},
+        calls,
+    )
+
+    async def timeout(awaitable, timeout):
+        awaitable.close()
+        raise asyncio.TimeoutError
+
+    monkeypatch.setattr(llm.asyncio, "wait_for", timeout)
+
+    with pytest.raises(TimeoutError, match="timed out after 60 seconds"):
+        asyncio.run(llm.complete_json([]))
+
+    assert len(calls) == 2
+    assert len(kill_groups) == 4
+    assert all(group == (12345, llm.signal.SIGKILL) for group in kill_groups)
 
 
 def test_recheck_reuses_live_checks_without_calling_llm(monkeypatch):
