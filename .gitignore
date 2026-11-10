@@ -1,4 +1,4 @@
-.env
+!.env.example
 *.env.local
 __pycache__/
 *.pyc
@@ -7,3 +7,4 @@ __pycache__/
 node_modules/
 frontend/dist/
 .DS_Store
+config.bat
