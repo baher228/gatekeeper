@@ -1,0 +1,307 @@
+from datetime import datetime, timedelta, timezone
+
+import pytest
+
+from app.db import connect
+from app.services.applications import applicant_detail
+
+
+def test_demo_applications_are_deterministic(client):
+    dave = client.post(
+        "/api/communities/grok-night-london/apply",
+        json={
+            "name": "Demo Dave", "email": "dave.profits@example.com", "phone": "+44 7700 900123",
+            "chat_handle": "demo-crypto-dave", "what_build": "A token with guaranteed 100x profits, DM me today.",
+            "category": "builder",
+        },
+    )
+    assert dave.status_code == 200, dave.text
+    assert dave.json()["status"] == "declined"
+    assert dave.json()["recommendation"]["route_rule"] == "blocklist_confirmed"
+
+    ada = client.post(
+        "/api/communities/grok-night-london/apply",
+        json={
+            "name": "Ada Ships", "email": "ada@example.com", "github": "demo-ada-ships",
+            "devpost": "ada-ships", "chat_handle": "demo-ada-ships",
+            "what_build": "I shipped a practical AI demo for London users. The repo includes a working product, tests, and a clear roadmap. I will share the demo and help other builders with feedback.",
+            "category": "builder",
+        },
+    )
+    assert ada.status_code == 200, ada.text
+    assert ada.json()["status"] in ("accepted", "waitlisted")
+
+
+def test_reconsideration_requires_due_date_and_never_allows_scams(client):
+    with connect() as conn:
+        community = conn.execute("select id from communities where slug='grok-night-london'").fetchone()["id"]
+        now = datetime.now(timezone.utc)
+        rows = []
+        for name, reason, due in [
+            ("Cooldown Test", "skill_gap", now + timedelta(days=1)),
+            ("Scam Cooldown Test", "scam_abuse", now - timedelta(days=1)),
+        ]:
+            rows.append(conn.execute(
+                """insert into applicants(community_id,name,email,what_build,category,status,decision_source,
+                final_score,confidence,decline_reason,decided_at,reconsider_after,created_at)
+                values (%s,%s,%s,'A detailed application that explains the project.', 'builder','declined',
+                'auto',0.2,0.8,%s,%s,%s,%s) returning id""",
+                (community, name, f"{name.lower().replace(' ', '')}@example.com", reason, now, due, now),
+            ).fetchone()["id"])
+    before = client.post(f"/api/applicants/{rows[0]}/recheck")
+    scam = client.post(f"/api/applicants/{rows[1]}/recheck")
+    assert before.status_code == 400
+    assert "available after" in before.json()["detail"]
+    assert scam.status_code == 400
+    assert "not eligible" in scam.json()["detail"]
+
+
+def test_eligible_seed_reconsideration_updates_evidence_and_notifies(client):
+    with connect() as conn:
+        row = conn.execute(
+            "select id from applicants where github='demo-maya-learns' and is_seed=true limit 1"
+        ).fetchone()
+    response = client.post(f"/api/applicants/{row['id']}/recheck")
+    assert response.status_code == 200, response.text
+    detail = response.json()
+    assert detail["reconsidered"] is True
+    assert detail["status"] in ("accepted", "waitlisted", "ask")
+    assert "14 repos" in detail["reconsideration"]["note"]
+    notifications = client.get("/api/communities/grok-night-london/notifications").json()
+    assert any(item["kind"] == "reconsidered" and item["applicant_id"] == str(row["id"]) for item in notifications)
+
+
+def test_applicant_routes_and_decline_validation(client):
+    response = client.get("/api/communities/grok-night-london/queue")
+    assert response.status_code == 200
+    assert response.json()
+    missing = client.get("/api/applicants/00000000-0000-0000-0000-000000000000")
+    assert missing.status_code == 404
+
+
+def test_seeded_queue_cards_have_real_recommendations(client):
+    response = client.get("/api/communities/grok-night-london/queue")
+
+    assert response.status_code == 200, response.text
+    applicants = response.json()
+    assert len(applicants) == 6
+    for applicant in applicants:
+        recommendation = applicant["recommendation"]
+        assert recommendation["history"]["available"] is True
+        assert recommendation["rule_checks"]
+
+
+def test_seed_history_model_has_positive_build_signal(client):
+    from app.services.history import train_model
+
+    with connect() as conn:
+        community_id = conn.execute(
+            "select id from communities where slug='grok-night-london'"
+        ).fetchone()["id"]
+    model = train_model(str(community_id))
+    weights = {item["feature"]: item["weight"] for item in model["coefficients"]}
+
+    assert model["available"] is True
+    assert model["n_decisions"] == 120
+    assert weights["rule_score"] > 0 or weights["gh_repos_log"] > 0
+
+
+def test_message_check_uses_cached_sms_model(client, monkeypatch):
+    from app.services import message_classifier
+
+    rows = [
+        {"text": "claim your free prize now", "label": "spam"},
+        {"text": "urgent winner call now", "label": "spam"},
+        {"text": "free cash reward guaranteed", "label": "spam"},
+        {"text": "limited offer claim today", "label": "spam"},
+        {"text": "win a bonus prize", "label": "spam"},
+        {"text": "are we still meeting for lunch", "label": "ham"},
+        {"text": "please call me when you arrive", "label": "ham"},
+        {"text": "thanks for your help yesterday", "label": "ham"},
+        {"text": "the project meeting starts at noon", "label": "ham"},
+        {"text": "see you at the station later", "label": "ham"},
+    ]
+
+    async def load_rows():
+        return rows
+
+    monkeypatch.setattr(message_classifier, "_MODEL", None)
+    monkeypatch.setattr(message_classifier, "_load_training_rows", load_rows)
+    response = client.post(
+        "/api/messages/check",
+        json={"text": "urgent, claim your free cash prize"},
+    )
+
+    assert response.status_code == 200, response.text
+    result = response.json()
+    assert result["label"] == "spam"
+    assert result["scam_probability"] > 0.5
+    assert result["top_terms"]
+    assert "review it" in result["draft_removal"]
+
+
+def test_ask_application_persists_ask_more_and_review_notification(client):
+    response = client.post(
+        "/api/communities/grok-night-london/apply",
+        json={
+            "name": "Pending Review Applicant",
+            "email": "pending-demo-b@example.com",
+            "chat_handle": "demo-ada-ships",
+            "what_build": "I shipped a practical AI demo and would like feedback from London builders.",
+            "category": "builder",
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    applicant = response.json()
+    assert applicant["status"] == "ask"
+    with connect() as conn:
+        decision = conn.execute(
+            """select verdict,source from decisions
+            where applicant_id=%s order by created_at desc limit 1""",
+            (applicant["id"],),
+        ).fetchone()
+        notification = conn.execute(
+            """select id from notifications
+            where applicant_id=%s and kind='needs_review' limit 1""",
+            (applicant["id"],),
+        ).fetchone()
+
+    assert decision is not None
+    assert decision["verdict"] == "ask_more"
+    assert decision["source"] == "auto"
+    assert notification is not None
+    with connect() as conn:
+        conn.execute("delete from notifications where applicant_id=%s", (applicant["id"],))
+        conn.execute("delete from decisions where applicant_id=%s", (applicant["id"],))
+        conn.execute("delete from applicants where id=%s", (applicant["id"],))
+
+
+def test_demo_reset_restores_seed_and_preserves_real_applications(client, monkeypatch, request):
+    from app.services import applications
+    from app.services.rules import heuristic_checks
+
+    monkeypatch.delenv("DEMO_RESET", raising=False)
+    created_ids = []
+
+    def cleanup():
+        with connect() as conn:
+            for applicant_id in created_ids:
+                conn.execute("delete from applicants where id=%s", (applicant_id,))
+
+    request.addfinalizer(cleanup)
+    original_gather = applications.gather_evidence
+
+    async def offline_gather(applicant, fixture=None):
+        if fixture:
+            return await original_gather(applicant, fixture)
+        return {
+            "github": {"status": "not_provided"},
+            "devpost": {"status": "not_provided"},
+            "stopforumspam": {
+                "status": "not_provided",
+                "email_appears": False,
+                "username_appears": False,
+                "confidence": 0,
+            },
+        }
+
+    async def offline_rules(rules, applicant, evidence):
+        return heuristic_checks(rules, applicant, evidence), {
+            "status": "unavailable",
+            "provider": "gemini",
+            "model": "gemini-3.8-flash",
+            "error": "offline test",
+        }
+
+    monkeypatch.setattr(applications, "gather_evidence", offline_gather)
+    monkeypatch.setattr(applications, "check_rules", offline_rules)
+
+    real_response = client.post(
+        "/api/communities/grok-night-london/apply",
+        json={
+            "name": "Real Reset Test",
+            "email": "real-reset-test@example.com",
+            "what_build": "Just visiting.",
+            "category": "builder",
+        },
+    )
+    assert real_response.status_code == 200, real_response.text
+    real_applicant = real_response.json()
+    created_ids.append(real_applicant["id"])
+    assert real_applicant["is_seed"] is False
+    assert real_applicant["status"] == "declined"
+
+    demo_response = client.post(
+        "/api/communities/grok-night-london/apply",
+        json={
+            "name": "Reset Demo Applicant",
+            "email": "pending-demo-b@example.com",
+            "chat_handle": "demo-ada-ships",
+            "what_build": "I shipped a practical AI demo and would like feedback from London builders.",
+            "category": "builder",
+        },
+    )
+    assert demo_response.status_code == 200, demo_response.text
+    demo_applicant = demo_response.json()
+    created_ids.append(demo_applicant["id"])
+    assert demo_applicant["status"] == "ask"
+    assert demo_applicant["is_seed"] is True
+
+    with connect() as conn:
+        auto_decision = conn.execute(
+            """select is_seed from decisions
+            where applicant_id=%s and source='auto' order by created_at desc limit 1""",
+            (demo_applicant["id"],),
+        ).fetchone()
+        notification = conn.execute(
+            """select is_seed from notifications
+            where applicant_id=%s and kind='needs_review' limit 1""",
+            (demo_applicant["id"],),
+        ).fetchone()
+    assert auto_decision["is_seed"] is True
+    assert notification["is_seed"] is True
+
+    lead_response = client.post(
+        f"/api/applicants/{demo_applicant['id']}/decision",
+        json={"verdict": "accept"},
+    )
+    assert lead_response.status_code == 200, lead_response.text
+    with connect() as conn:
+        lead_decision = conn.execute(
+            """select is_seed from decisions
+            where applicant_id=%s and source='lead' order by created_at desc limit 1""",
+            (demo_applicant["id"],),
+        ).fetchone()
+    assert lead_decision["is_seed"] is True
+
+    reset = client.post("/api/demo/reset")
+    assert reset.status_code == 200, reset.text
+    assert reset.json() == {"ok": True, "applicants": 130, "queue": 6}
+    with connect() as conn:
+        real_row = conn.execute(
+            "select id from applicants where id=%s and is_seed=false",
+            (real_applicant["id"],),
+        ).fetchone()
+        demo_row = conn.execute(
+            "select id from applicants where id=%s",
+            (demo_applicant["id"],),
+        ).fetchone()
+    assert real_row is not None
+    assert demo_row is None
+
+    queue = client.get("/api/communities/grok-night-london/queue")
+    assert queue.status_code == 200
+    assert len(queue.json()) == 6
+    model = client.get("/api/communities/grok-night-london/model")
+    assert model.status_code == 200
+    assert model.json()["n_decisions"] == 120
+
+
+def test_demo_reset_can_be_disabled(client, monkeypatch):
+    monkeypatch.setenv("DEMO_RESET", "0")
+
+    response = client.post("/api/demo/reset")
+
+    assert response.status_code == 403
+    assert response.json()["detail"] == "Demo reset is disabled"
